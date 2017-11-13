@@ -83,7 +83,14 @@ task e2eTest(
 }
 
 dependencies {
-    compile "com.scherule:scherule-commons:1.1.6"
+    compile "com.scherule:scherule-commons:1.1.6",
+     "com.fasterxml.jackson.core:jackson-databind",
+     "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0",
+     "org.postgresql:postgresql:9.4-1206-jdbc42",
+     "com.h2database:h2:1.4.196"
+
+     testCompile "io.rest-assured:rest-assured:3.0.0",
+        "io.rest-assured:json-schema-validator:3.0.0"
 }
 
 compileKotlin {
