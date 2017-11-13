@@ -1,0 +1,14 @@
+.message-panel {
+
+  &__message {
+    font-size: 0.8em;
+    text-decoration: underline;
+    padding-bottom: 20px;
+
+    &--error {
+      color: rgba(255, 0, 0, 0.8);
+    }
+
+  }
+
+}

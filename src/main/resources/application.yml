@@ -1,0 +1,126 @@
+server:
+#  contextPath: /auth
+  port: 80
+
+keystore:
+  password: mySecretKey
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    ip-address: ${HOST:localhost}
+    non-secure-port: ${server.port}
+    leaseRenewalIntervalInSeconds: 10
+    leaseExpirationDurationInSeconds: 20
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URL:http://localhost:9990/eureka/}
+
+security:
+ oauth2:
+   resource:
+     userInfoUri: http://localhost:9998/api/users/me
+
+facebook:
+  client:
+    clientId: 331283990675863 # Obviously this should be hidden but as this is a private & demo repo...
+    clientSecret: df8e0d5dfa0d63f1fd1e21d5d683b323 # Obviously this should be hidden but as this is a private & demo repo...
+    accessTokenUri: https://graph.facebook.com/oauth/access_token
+    userAuthorizationUri: https://www.facebook.com/dialog/oauth
+    tokenName: oauth_token
+    authenticationScheme: query
+    clientAuthenticationScheme: form
+  resource:
+    userInfoUri: https://graph.facebook.com/me
+google:
+  client:
+    clientId: 903270973168-v8avhmisqq0p0a5ih7bgmpsqicgecujo.apps.googleusercontent.com # Obviously this should be hidden but as this is a private & demo repo...
+    clientSecret: mzfvujQ8qZZuytVVFeKVPLWc # Obviously this should be hidden but as this is a private & demo repo...
+    accessTokenUri: https://www.googleapis.com/oauth2/v4/token
+    userAuthorizationUri: https://accounts.google.com/o/oauth2/v2/auth
+    tokenName: oauth_token
+    authenticationScheme: query
+    scope:
+     - openid
+     - email
+     - profile
+    clientAuthenticationScheme: form
+  resource:
+    userInfoUri: https://www.googleapis.com/oauth2/v3/userinfo
+    userAuthorizationUri: http://localhost
+    preferTokenInfo: true
+github:
+  client:
+    clientId: 404225905d6be83e609a # Obviously this should be hidden but as this is a private & demo repo...
+    clientSecret: 5faed714099be014cb05fd7b0926a007211aaeca # Obviously this should be hidden but as this is a private & demo repo...
+    accessTokenUri: https://github.com/login/oauth/access_token
+    userAuthorizationUri: https://github.com/login/oauth/authorize
+    clientAuthenticationScheme: form
+  resource:
+    userInfoUri: https://api.github.com/user
+
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+
+  datasource:
+    url: jdbc:postgresql://0.0.0.0:5432/auth
+    username: test
+    password: test
+    driver-class-name: org.postgresql.Driver
+
+  mail:
+    properties:
+      mail:
+        smtp:
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+
+mail:
+  host: 0.0.0.0
+  account:
+    username: noreply@timezones.com
+    password: test
+
+registration:
+  confirmation:
+    link: http://localhost:3000/#/register?confirmation=##code##
+  email:
+    from: noreply@timezones.com
+    subject: Your registration link at Expenses Tracker App
+
+admin:
+  username: admin
+  password: Secret123!
+
+user:
+  password:
+    reset:
+      email:
+        link: http://localhost:3000/#/reset-password?resetcode=##code##
+        from: noreply@timezones.com
+        subject: Reset your password at Expenses Tracker App
+
+logging:
+  level:
+    org.springframework.security: ERROR
+
+---
+spring:
+  profiles: dev
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+server:
+  port: 9998
+  session:
+    cookie:
+      name: AUTH_SESSION
+logging:
+  level:
+    org.springframework.security: DEBUG
