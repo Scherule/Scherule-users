@@ -1,6 +1,8 @@
 package com.scherule.users.models
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.hibernate.annotations.GenericGenerator
+import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
@@ -16,10 +18,10 @@ class User(
          * Used mainly because user emails should not be exposed in rest resources
          */
         @Id
-        @Column(name = "id")
-        @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
-        @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
-        val id: Long? = null,
+        @GeneratedValue(generator="system-uuid")
+        @GenericGenerator(name="system-uuid", strategy = "uuid")
+        @Column(name = "id", unique = true)
+        val id: String? = null,
 
         /**
          * The email is an e-mail account as this provides out of the box uniqueness.

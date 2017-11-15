@@ -9,7 +9,7 @@ import com.toptal.ggurgul.timezones.domain.events.PasswordResetCodeIssued
 import com.toptal.ggurgul.timezones.domain.events.RegistrationCodeIssuedEvent
 import com.toptal.ggurgul.timezones.exceptions.InvalidPasswordException
 import com.scherule.users.exceptions.UserNotFoundException
-import com.toptal.ggurgul.timezones.exceptions.WrongConfirmationCodeException
+import com.scherule.users.exceptions.WrongConfirmationCodeException
 import com.scherule.users.models.UserAccount
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.security.core.context.SecurityContextHolder
@@ -39,12 +39,12 @@ class UserService(
     @Transactional
     fun activateUser(code: String) {
         val decodedCode = userCodeTranslator.readFrom(code)
-        val username: String = decodedCode.substringBefore(":")
+        val userId: String = decodedCode.substringBefore(":")
 
-        val user = Optional.of(userRepository.findOne(username as Long)).orElseThrow { IllegalStateException() }
+        val user = Optional.of(userRepository.findOne(userId)).orElseThrow { IllegalStateException() }
 
         val userCode = userCodesRepository.findByUserAndType(user, UserCodeType.REGISTRATION_CONFIRMATION)
-                .orElseThrow { IllegalStateException() }
+                .orElseThrow { WrongConfirmationCodeException() }
 
         return if (code == userCode.code) {
             user.enabled = true
@@ -96,7 +96,7 @@ class UserService(
         val decodedCode = userCodeTranslator.readFrom(code)
         val username: String = decodedCode.substringBefore(":")
 
-        val user = Optional.of(userRepository.findOne(username as Long)).orElseThrow { WrongConfirmationCodeException() }
+        val user = Optional.of(userRepository.findOne(username)).orElseThrow { WrongConfirmationCodeException() }
 
         val userCode = userCodesRepository.findByUserAndType(user, UserCodeType.PASSWORD_RESET)
                 .orElseThrow { WrongConfirmationCodeException() }

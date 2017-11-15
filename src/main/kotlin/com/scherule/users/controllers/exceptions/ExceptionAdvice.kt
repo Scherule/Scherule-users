@@ -1,6 +1,7 @@
 package com.scherule.users.controllers.exceptions
 
 import com.scherule.users.exceptions.UserNotFoundException
+import com.scherule.users.services.UserCodeTranslator
 import org.apache.commons.logging.LogFactory
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -19,6 +20,12 @@ class ExceptionAdvice {
     @ExceptionHandler(UserNotFoundException::class)
     fun handleUnauthorized(){
         LOG.debug("Unauthorized login attempt.")
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)  // 409
+    @ExceptionHandler(UserCodeTranslator.MalformedUserCodeException::class)
+    fun malformedUserCode(){
+        LOG.debug("Malformed user code.")
     }
 
 }

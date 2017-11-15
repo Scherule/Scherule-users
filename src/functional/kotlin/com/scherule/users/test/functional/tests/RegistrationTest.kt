@@ -35,7 +35,7 @@ class RegistrationTest : AbstractFunctionalTest() {
     }
 
     @Test
-    fun userCanRegister() {
+    fun postRegister() {
         RestAssured.given()
                 .spec(jsonContentType())
                 .body("""
@@ -52,10 +52,27 @@ class RegistrationTest : AbstractFunctionalTest() {
     }
 
     @Test
-    fun isUnauthorizedForWrongConfirmationCode() {
+    fun postRegistrationConfirmation() {
         val registrationCode = createUserAndGetConfirmationCode()
 
         RestAssured.given()
+                .spec(jsonContentType())
+                .body("""
+                    {
+                        "code": "$registrationCode"
+                    }
+                """.trim())
+                .post("/api/registration/confirmation")
+                .then()
+                .statusCode(200)
+    }
+
+    @Test
+    fun isBadRequestForMalformedConfirmationCode() {
+        val registrationCode = createUserAndGetConfirmationCode()
+
+        RestAssured.given()
+                .spec(jsonContentType())
                 .body("""
                     {
                         "code": "${registrationCode}x"
@@ -63,14 +80,15 @@ class RegistrationTest : AbstractFunctionalTest() {
                 """.trim())
                 .post("/api/registration/confirmation")
                 .then()
-                .statusCode(403)
+                .statusCode(400)
     }
 
     @Test
-    fun cannotUseSameConfirmationCodeTwice() {
+    fun isBadRequestIfSameConfirmationCodeUsedTwice() {
         val registrationCode = createUserAndGetConfirmationCode()
 
         val confirmationRequest = RestAssured.given()
+                .spec(jsonContentType())
                 .body("""
                     {
                         "code": "$registrationCode"
@@ -78,26 +96,11 @@ class RegistrationTest : AbstractFunctionalTest() {
                 """.trim())
 
         confirmationRequest
-                .post("/registration/confirmation")
+                .post("/api/registration/confirmation")
         confirmationRequest
-                .post("/registration/confirmation")
+                .post("/api/registration/confirmation")
                 .then()
-                .statusCode(403)
-    }
-
-    @Test
-    fun accountIsActivatedForValidConfirmationCode() {
-        val registrationCode = createUserAndGetConfirmationCode()
-
-        RestAssured.given()
-                .body("""
-                    {
-                        "code": "$registrationCode"
-                    }
-                """.trim())
-                .post("/registration/confirmation")
-                .then()
-                .statusCode(200)
+                .statusCode(400)
     }
 
     private fun createUserAndGetConfirmationCode(): String {

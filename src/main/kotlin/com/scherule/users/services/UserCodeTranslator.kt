@@ -18,8 +18,12 @@ class UserCodeTranslator(
     }
 
     fun readFrom(code: String): String {
-        val decoded = Base64.getDecoder().decode(code)
-        return decoded.toString(Charset.forName("UTF-8"))
+        try {
+            val decoded = Base64.getDecoder().decode(code)
+            return decoded.toString(Charset.forName("UTF-8"))
+        } catch (e: Exception) {
+            throw MalformedUserCodeException(e)
+        }
     }
 
     private fun generateRandomHexToken(byteLength: Int): String {
@@ -27,5 +31,7 @@ class UserCodeTranslator(
         secureRandom.nextBytes(token)
         return BigInteger(1, token).toString(16)
     }
+
+    class MalformedUserCodeException(e: Exception) : RuntimeException("User code is not readable.", e)
 
 }

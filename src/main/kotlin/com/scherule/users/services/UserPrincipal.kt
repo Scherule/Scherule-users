@@ -9,7 +9,7 @@ import java.security.Principal
 
 interface UserPrincipal : UserDetails, Principal {
 
-    fun id(): Long?
+    fun id(): String?
 
     fun getFirstName(): String?
 
@@ -22,7 +22,7 @@ class UserPrincipalModel(
         val user: org.springframework.security.core.userdetails.User
 ) : UserPrincipal {
 
-    override fun id(): Long? {
+    override fun id(): String? {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -54,7 +54,7 @@ class UserPrincipalEntity(
         val user: User
 ) : UserPrincipal {
 
-    override fun id(): Long? {
+    override fun id(): String? {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

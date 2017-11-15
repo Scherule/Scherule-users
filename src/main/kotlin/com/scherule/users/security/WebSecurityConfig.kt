@@ -84,6 +84,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                         HttpMethod.POST,
                         "/api/login**",
                         "/api/registration**",
+                        "/api/registration/confirmation**",
                         "/api/user/password/reset*/**"
                 ).permitAll()
                 .anyRequest()
@@ -225,15 +226,15 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
     )
 
-}
+    class UnauthorizedMultipleMethodsEntryPoint(val realmName: String) : AuthenticationEntryPoint {
 
-class UnauthorizedMultipleMethodsEntryPoint(val realmName: String) : AuthenticationEntryPoint {
+        override fun commence(request: HttpServletRequest, response: HttpServletResponse, authException: AuthenticationException) {
+            response.addHeader("WWW-Authenticate", "Basic realm=\"" + realmName + "\"")
+            response.addHeader("WWW-Authenticate", "Bearer realm=\"" + realmName + "\"")
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+                    authException.message)
+        }
 
-    override fun commence(request: HttpServletRequest, response: HttpServletResponse, authException: AuthenticationException) {
-        response.addHeader("WWW-Authenticate", "Basic realm=\"" + realmName + "\"")
-        response.addHeader("WWW-Authenticate", "Bearer realm=\"" + realmName + "\"")
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
-                authException.message)
     }
 
 }

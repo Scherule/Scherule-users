@@ -47,7 +47,7 @@ class UserController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping("/:email")
-    fun getById(@PathParam("id") id: Long): User {
+    fun getById(@PathParam("id") id: String): User {
         return Optional.ofNullable(userRepository.findOne(id)).orElseThrow { UserNotFoundException() }
     }
 

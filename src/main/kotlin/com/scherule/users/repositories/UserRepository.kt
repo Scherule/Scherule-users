@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import java.util.*
 
-interface UserRepository : JpaRepository<User, Long> {
+interface UserRepository : JpaRepository<User, String> {
 
     fun findByEmail(email: String): Optional<User>
 
