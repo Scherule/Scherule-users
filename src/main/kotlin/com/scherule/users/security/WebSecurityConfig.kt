@@ -2,7 +2,6 @@ package com.scherule.users.security
 
 import com.scherule.users.handlers.LocalAuthenticationFailureHandler
 import com.scherule.users.models.IdentityType
-import com.ggurgul.playground.extracker.auth.services.*
 import com.scherule.users.services.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.security.SecurityProperties

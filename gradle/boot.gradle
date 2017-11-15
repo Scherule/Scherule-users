@@ -1,12 +1,12 @@
 apply plugin: 'org.springframework.boot'
 
 bootRun {
-    systemProperty 'server.port', Integer.getInteger('server.port', 5002)
+    systemProperty 'server.port', Integer.getInteger('server.port', 9998)
 }
 
 dependencyManagement {
     imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Brixton.SR7"
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Camden.SR6"
     }
 }
 

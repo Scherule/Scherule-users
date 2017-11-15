@@ -1,6 +1,5 @@
 package com.scherule.users.services
 
-import com.ggurgul.playground.extracker.auth.models.*
 import com.scherule.users.models.*
 import com.scherule.users.repositories.UserRepository
 import org.springframework.security.core.GrantedAuthority

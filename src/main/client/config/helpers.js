@@ -1,6 +1,6 @@
 var path = require('path');
 var _root = path.resolve(__dirname, '..');
-var _target = path.resolve(__dirname, '..', '..', '..', '..', 'target', 'classes', 'static');
+var _target = path.resolve(__dirname, '..', '..', '..', '..', 'out', 'production', 'resources', 'static');
 
 exports.root = function(args) {
   args = Array.prototype.slice.call(arguments, 0);

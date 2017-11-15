@@ -17,7 +17,6 @@ import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSenderImpl
 import org.springframework.security.access.expression.SecurityExpressionRoot
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.cors.CorsConfiguration
@@ -39,7 +38,7 @@ import javax.servlet.http.HttpServletResponse
 @EnableEurekaClient
 @EnableEntityLinks
 @RestController
-class App : WebMvcConfigurerAdapter() {
+class ScheruleUsers : WebMvcConfigurerAdapter() {
 
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
         registry
@@ -143,14 +142,10 @@ class App : WebMvcConfigurerAdapter() {
 
     }
 
-    companion object {
+}
 
-        @JvmStatic
-        fun main(args: Array<String>) {
-            SpringApplication.run(App::class.java, *args)
-        }
-    }
-
+fun main(args: Array<String>) {
+    SpringApplication.run(ScheruleUsers::class.java, *args)
 }
 
 

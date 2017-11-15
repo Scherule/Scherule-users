@@ -67,7 +67,7 @@ spring:
       ddl-auto: validate
 
   datasource:
-    url: jdbc:postgresql://0.0.0.0:5432/auth
+    url: jdbc:postgresql://0.0.0.0:5432/users
     username: test
     password: test
     driver-class-name: org.postgresql.Driver

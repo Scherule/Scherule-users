@@ -1,10 +1,10 @@
 {
-  "name": "ex-tracker-auth",
+  "name": "scherule-users-ui",
   "version": "1.0.0",
   "scripts": {
-    "clean": "rimraf ../../../target/classes/static/",
-    "build": "npm run clean && webpack --config config/webpack.prod.js --progress --bail",
-    "build:dev": "npm run clean && webpack --config config/webpack.dev.js --progress --bail",
+    "clean": "rimraf ../../../build/resources/static",
+    "build": "webpack --config config/webpack.prod.js --progress --bail",
+    "build:dev": "webpack --config config/webpack.dev.js --progress --bail",
     "watch": "npm run build:dev -- --watch",
     "test": "karma start"
   },
