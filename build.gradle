@@ -43,7 +43,7 @@ junitPlatform {
 
     filters {
         packages {
-            include 'com.scherule.calendaring'
+            include 'com.scherule.users'
         }
     }
 }
@@ -64,23 +64,23 @@ task functionalTest(
             '--reports-dir', "${buildDir}/test-results/junit-functional"]
 }
 
-task e2eTest(
-        type: JavaExec,
-        description: 'Runs e2e tests.',
-        group: 'Verification'
-) {
-    dependsOn testClasses, startMyAppContainer, allocatePort
-    shouldRunAfter test
-    finalizedBy stopMyAppContainer
-
-    classpath = sourceSets.e2e.runtimeClasspath
-
-    main = 'org.junit.platform.console.ConsoleLauncher'
-    jvmArgs = ["-Dhttp.port=${allocatePort.ext.port}"]
-    args = ['--scan-class-path',
-            sourceSets.e2e.output.getClassesDirs().asPath,
-            '--reports-dir', "${buildDir}/test-results/junit-e2e"]
-}
+//task e2eTest(
+//        type: JavaExec,
+//        description: 'Runs e2e tests.',
+//        group: 'Verification'
+//) {
+//    dependsOn testClasses, startMyAppContainer, allocatePort
+//    shouldRunAfter test
+//    finalizedBy stopMyAppContainer
+//
+//    classpath = sourceSets.e2e.runtimeClasspath
+//
+//    main = 'org.junit.platform.console.ConsoleLauncher'
+//    jvmArgs = ["-Dhttp.port=${allocatePort.ext.port}"]
+//    args = ['--scan-class-path',
+//            sourceSets.e2e.output.getClassesDirs().asPath,
+//            '--reports-dir', "${buildDir}/test-results/junit-e2e"]
+//}
 
 dependencies {
     compile "com.scherule:scherule-commons:1.1.6",
@@ -91,6 +91,15 @@ dependencies {
 
      testCompile "io.rest-assured:rest-assured:3.0.0",
         "io.rest-assured:json-schema-validator:3.0.0"
+
+    testCompile "junit:junit:4.12"
+    testCompile "org.junit.jupiter:junit-jupiter-api:$junit_jupiter_version"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine:$junit_jupiter_version"
+    testRuntime "org.junit.vintage:junit-vintage-engine:$junit_vintage_version"
+    testRuntime "org.junit.platform:junit-platform-launcher:$junit_platform_version"
+    testRuntime "org.junit.platform:junit-platform-runner:$junit_platform_version"
+
+    functionalCompile 'org.junit.platform:junit-platform-console:1.0.0-M5'
 }
 
 compileKotlin {

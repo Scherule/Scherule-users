@@ -13,17 +13,17 @@ configurations {
 sourceSets {
 
     functional {
-        kotlin {
+        java {
             compileClasspath += main.output + test.output
             runtimeClasspath += main.output + test.output
-            srcDir file('src/functional/kotlin')
+            srcDir file('src/functional/java')
         }
         resources.srcDir file('src/functional/resources')
     }
 
     e2e {
-        kotlin {
-            srcDir file('src/e2e/kotlin')
+        java {
+            srcDir file('src/e2e/java')
         }
         resources.srcDir file('src/e2e/resources')
     }
