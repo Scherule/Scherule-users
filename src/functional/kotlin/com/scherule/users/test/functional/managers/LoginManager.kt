@@ -1,7 +1,6 @@
-package com.ggurgul.playground.extracker.auth.management
+package com.scherule.users.test.functional.managers
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.ggurgul.playground.extracker.auth.models.User
 import org.apache.http.client.HttpClient
 import org.apache.http.client.entity.UrlEncodedFormEntity
 import org.apache.http.client.methods.HttpPost
@@ -9,7 +8,6 @@ import org.apache.http.impl.client.HttpClients
 import org.apache.http.message.BasicNameValuePair
 import org.apache.http.util.EntityUtils
 import org.springframework.boot.context.embedded.EmbeddedServletContainerInitializedEvent
-import org.springframework.boot.context.embedded.LocalServerPort
 import org.springframework.boot.test.context.TestComponent
 import org.springframework.context.ApplicationListener
 import java.util.*
@@ -24,7 +22,7 @@ class LoginManager : ApplicationListener<EmbeddedServletContainerInitializedEven
     fun getTokenFor(username: String, password: String): String {
         val response = httpClient.execute(HttpPost("http://localhost:$appPort/oauth/token").apply {
             setHeader("Authorization", "Basic " + Base64.getEncoder()
-                    .encodeToString("$CLIENT_ID:$CLIENT_SECRET".toByteArray()));
+                    .encodeToString("${CLIENT_ID}:${CLIENT_SECRET}".toByteArray()));
 
             entity = UrlEncodedFormEntity(mutableListOf(
                     BasicNameValuePair("grant_type", "password"),

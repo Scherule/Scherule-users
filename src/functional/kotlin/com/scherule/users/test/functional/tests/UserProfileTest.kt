@@ -1,8 +1,8 @@
-package com.ggurgul.playground.extracker.auth.functional.tests
+package com.scherule.users.test.functional.tests
 
-import com.ggurgul.playground.extracker.auth.functional.AbstractFunctionalTest
-import com.ggurgul.playground.extracker.auth.management.LoginManager
-import com.ggurgul.playground.extracker.auth.management.UsersManager
+import com.scherule.users.test.functional.AbstractFunctionalTest
+import com.scherule.users.test.functional.managers.LoginManager
+import com.scherule.users.test.functional.managers.UsersManager
 import io.restassured.RestAssured
 import io.restassured.authentication.FormAuthConfig
 import org.hamcrest.Matchers

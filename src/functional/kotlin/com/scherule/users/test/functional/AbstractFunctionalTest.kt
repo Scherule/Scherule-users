@@ -1,8 +1,7 @@
-package com.ggurgul.playground.extracker.auth.functional
+package com.scherule.users.test.functional
 
-import com.ggurgul.playground.extracker.auth.management.UsersManager
+import com.scherule.users.test.functional.managers.UsersManager
 import io.restassured.RestAssured
-import io.restassured.builder.RequestSpecBuilder
 import org.junit.Before
 import org.junit.experimental.categories.Category
 import org.junit.runner.RunWith
@@ -50,7 +49,7 @@ abstract class AbstractFunctionalTest {
     }
 
     @Configuration
-    @ComponentScan("com.ggurgul.playground.extracker.auth.management")
+    @ComponentScan("com.scherule.users.test.functional.managers")
     class TestUtilsContext {
 
         @MockBean

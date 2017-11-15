@@ -1,11 +1,11 @@
-package com.ggurgul.playground.extracker.auth.functional.tests
+package com.scherule.users.test.functional.tests
 
-import com.ggurgul.playground.extracker.auth.functional.AbstractFunctionalTest
-import com.ggurgul.playground.extracker.auth.models.User
-import com.ggurgul.playground.extracker.auth.models.UserCodeType
-import com.ggurgul.playground.extracker.auth.repositories.UserCodesRepository
-import com.ggurgul.playground.extracker.auth.repositories.UserRepository
-import com.ggurgul.playground.extracker.auth.services.UserService
+import com.scherule.users.models.User
+import com.scherule.users.models.UserCodeType
+import com.scherule.users.repositories.UserCodesRepository
+import com.scherule.users.repositories.UserRepository
+import com.scherule.users.services.UserService
+import com.scherule.users.test.functional.AbstractFunctionalTest
 import io.restassured.RestAssured
 import org.junit.Before
 import org.junit.Test

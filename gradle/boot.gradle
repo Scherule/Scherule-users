@@ -20,7 +20,8 @@ dependencies {
             "org.springframework.hateoas:spring-hateoas",
             "org.springframework.plugin:spring-plugin-core",
             "org.springframework.security:spring-security-jwt",
-            "org.springframework.boot:spring-boot-starter-mail"
+            "org.springframework.boot:spring-boot-starter-mail",
+            "org.springframework.boot:spring-boot-devtools"
 
     testCompile "org.springframework.boot:spring-boot-starter-test",
             "org.springframework.security:spring-security-test"

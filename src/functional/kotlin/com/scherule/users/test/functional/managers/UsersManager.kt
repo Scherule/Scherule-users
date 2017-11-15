@@ -1,10 +1,10 @@
-package com.ggurgul.playground.extracker.auth.management
+package com.scherule.users.test.functional.managers
 
-import com.ggurgul.playground.extracker.auth.models.Authority
-import com.ggurgul.playground.extracker.auth.models.AuthorityName
-import com.ggurgul.playground.extracker.auth.models.User
-import com.ggurgul.playground.extracker.auth.repositories.AuthorityRepository
-import com.ggurgul.playground.extracker.auth.repositories.UserRepository
+import com.scherule.users.models.Authority
+import com.scherule.users.models.AuthorityName
+import com.scherule.users.models.User
+import com.scherule.users.repositories.AuthorityRepository
+import com.scherule.users.repositories.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestComponent
 import org.springframework.security.crypto.password.PasswordEncoder

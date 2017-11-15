@@ -1,10 +1,10 @@
-package com.ggurgul.playground.extracker.auth.functional.tests
+package com.scherule.users.test.functional.tests
 
 
-import com.ggurgul.playground.extracker.auth.functional.AbstractFunctionalTest
-import com.ggurgul.playground.extracker.auth.management.LoginManager
-import com.ggurgul.playground.extracker.auth.management.UsersManager
-import com.ggurgul.playground.extracker.auth.models.User
+import com.scherule.users.models.User
+import com.scherule.users.test.functional.AbstractFunctionalTest
+import com.scherule.users.test.functional.managers.LoginManager
+import com.scherule.users.test.functional.managers.UsersManager
 import io.restassured.RestAssured.given
 import io.restassured.http.Header
 import io.restassured.response.Response
@@ -54,9 +54,8 @@ class OAuthSecurityTest : AbstractFunctionalTest() {
     @Test
     @Throws(Exception::class)
     fun cannotUseTemperedWithToken() {
-        val token = getToken(issueTokenRequest(dummyUser.email, "secret"))
         given()
-                .header(Header("Authorization", "Bearer " + token + "x"))
+                .header(Header("Authorization", "Bearer x${loginManager.getTokenFor(dummyUser.email, "secret")}x"))
                 .get("/auth/account")
                 .then()
                 .statusCode(401)
