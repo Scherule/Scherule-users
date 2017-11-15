@@ -1,4 +1,4 @@
-package com.scherule.users.test.functional.tests
+package com.scherule.users.test.functional.tests.security
 
 
 import com.scherule.users.models.User
