@@ -55,7 +55,7 @@ class UserPrincipalEntity(
 ) : UserPrincipal {
 
     override fun id(): String? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return user.id
     }
 
     override fun getFirstName() = user.firstName

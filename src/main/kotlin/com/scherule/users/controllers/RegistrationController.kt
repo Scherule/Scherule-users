@@ -21,10 +21,7 @@ import org.springframework.web.bind.annotation.*
 class RegistrationController
 @Autowired
 constructor(
-        private val systemRunner: SystemRunner,
-        private val passwordEncoder: BCryptPasswordEncoder,
-        private val userService: UserService,
-        private val authorityRepository: AuthorityRepository
+        private val userService: UserService
 ) {
 
     @RequestMapping(method = arrayOf(RequestMethod.POST))
@@ -32,25 +29,16 @@ constructor(
     @Throws(RegistrationException::class)
     fun registerUser(
             @RequestBody registrationRequest: RegistrationRequest
-    ) {
-        systemRunner.runInSystemContext {
-            userService.registerUser(User(
-                    email = registrationRequest.email!!,
-                    password = passwordEncoder.encode(registrationRequest.password),
-                    authorities = mutableListOf(authorityRepository.findOne(AuthorityName.ROLE_USER))
-            ))
-        }
-    }
+    ) = userService.registerUser(
+            email = registrationRequest.email!!,
+            password = registrationRequest.password!!
+    )
 
     @RequestMapping(value = "/confirmation", method = arrayOf(RequestMethod.POST))
     @ResponseStatus(HttpStatus.OK)
     @Throws(RegistrationException::class)
     fun confirmUserRegistration(
             @RequestBody registrationConfirmationRequest: RegistrationConfirmationRequest
-    ) {
-        systemRunner.runInSystemContext {
-            userService.activateUser(registrationConfirmationRequest.code)
-        }
-    }
+    ) = userService.activateUser(registrationConfirmationRequest.code)
 
 }

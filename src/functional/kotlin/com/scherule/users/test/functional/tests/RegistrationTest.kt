@@ -104,10 +104,10 @@ class RegistrationTest : AbstractFunctionalTest() {
     }
 
     private fun createUserAndGetConfirmationCode(): String {
-        val user = userService.registerUser(User(
+        val user = userService.registerUser(
                 email = "someone@anyone.com",
-                password = passwordEncoder.encode("qwerty")
-        ))
+                password = "qwerty"
+        )
 
         return codesRepository.findByUserAndType(user, UserCodeType.REGISTRATION_CONFIRMATION).map { it.code }.get()
     }

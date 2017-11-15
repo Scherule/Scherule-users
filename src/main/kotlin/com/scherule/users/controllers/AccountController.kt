@@ -18,8 +18,7 @@ import javax.validation.Valid
 @RequestMapping("/api/account")
 class AccountController
 @Autowired constructor(
-        private val userService: UserService,
-        private val systemRunner: SystemRunner
+        private val userService: UserService
 ) {
 
     @RequestMapping(method = arrayOf(RequestMethod.GET))
@@ -57,9 +56,7 @@ class AccountController
     @RequestMapping(value = "/password/reset/confirmation", method = arrayOf(RequestMethod.POST))
     fun confirmPasswordReset(
             @RequestBody @Valid passwordResetRequest: SetNewPasswordRequest) {
-        systemRunner.runInSystemContext {
-            userService.confirmResetPassword(passwordResetRequest.code!!, passwordResetRequest.newPassword!!)
-        }
+        userService.confirmResetPassword(passwordResetRequest.code!!, passwordResetRequest.newPassword!!)
     }
 
     @ExceptionHandler(ConstraintViolationException::class)

@@ -1,4 +1,4 @@
-package com.ggurgul.playground.extracker.auth
+package com.scherule.users
 
 import org.junit.Test
 import org.junit.runner.RunWith
