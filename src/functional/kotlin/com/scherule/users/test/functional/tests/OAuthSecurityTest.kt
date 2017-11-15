@@ -3,7 +3,6 @@ package com.scherule.users.test.functional.tests
 
 import com.scherule.users.models.User
 import com.scherule.users.test.functional.AbstractFunctionalTest
-import com.scherule.users.test.functional.managers.LoginManager
 import com.scherule.users.test.functional.managers.UsersManager
 import io.restassured.RestAssured.given
 import io.restassured.http.Header
@@ -19,8 +18,6 @@ class OAuthSecurityTest : AbstractFunctionalTest() {
     @Autowired
     private lateinit var usersManager: UsersManager
 
-    @Autowired
-    private lateinit var loginManager: LoginManager
 
     private lateinit var dummyUser: User
 
@@ -32,7 +29,7 @@ class OAuthSecurityTest : AbstractFunctionalTest() {
     @Test
     @Throws(Exception::class)
     fun cannotGetTokenIfWrongPasswordUsed() {
-        issueTokenRequest(dummyUser.email, "invalid").then().statusCode(401)
+        issueTokenRequest(dummyUser.email, "invalid").then().statusCode(400)
     }
 
     @Test
@@ -44,8 +41,9 @@ class OAuthSecurityTest : AbstractFunctionalTest() {
     @Test
     @Throws(Exception::class)
     fun canUseTokenToGetSecuredUserDetails() {
+        val token = getToken(issueTokenRequest(dummyUser.email, "secret"))
         given()
-                .header("Authorization", "Bearer ${loginManager.getTokenFor(dummyUser.email, "secret")}")
+                .header("Authorization", "Bearer $token")
                 .get("/api/users/me")
                 .then()
                 .statusCode(200)
@@ -54,8 +52,9 @@ class OAuthSecurityTest : AbstractFunctionalTest() {
     @Test
     @Throws(Exception::class)
     fun cannotUseTemperedWithToken() {
+        val token = getToken(issueTokenRequest(dummyUser.email, "secret"))
         given()
-                .header(Header("Authorization", "Bearer x${loginManager.getTokenFor(dummyUser.email, "secret")}x"))
+                .header(Header("Authorization", "Bearer x${token}x"))
                 .get("/auth/account")
                 .then()
                 .statusCode(401)
@@ -75,7 +74,7 @@ class OAuthSecurityTest : AbstractFunctionalTest() {
         val params = HashMap<String, String>()
         params.put("grant_type", "password")
         params.put("client_id", VALID_CLIENT_ID)
-        params.put("email", username)
+        params.put("username", username)
         params.put("password", password)
 
         return given()
