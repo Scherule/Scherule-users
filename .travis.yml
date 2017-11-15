@@ -1,4 +1,4 @@
-language: generic
+language: java
 jobs:
   include:
     - stage: test
