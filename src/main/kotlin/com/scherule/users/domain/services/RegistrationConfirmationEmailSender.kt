@@ -1,7 +1,7 @@
 package com.toptal.ggurgul.timezones.domain.services
 
 import com.toptal.ggurgul.timezones.domain.events.RegistrationCodeIssuedEvent
-import com.scherule.users.models.UserCode
+import com.scherule.users.domain.models.UserCode
 import org.apache.commons.logging.LogFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier

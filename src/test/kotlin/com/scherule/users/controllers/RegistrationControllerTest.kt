@@ -1,6 +1,7 @@
 package com.scherule.users.controllers
 
-import com.scherule.users.models.User
+import com.scherule.users.domain.commands.RegistrationCommand
+import com.scherule.users.domain.models.User
 import org.junit.Before
 import org.junit.Test
 import org.mockito.BDDMockito.given
@@ -35,20 +36,30 @@ class RegistrationControllerTest : AbstractControllerTest() {
     @Test
     @Throws(Exception::class)
     fun canPostRegister() {
-        given(userService.registerUser("hello.kitty@dummy.com", "peterPan123")).willReturn(User(
-                email = "hello.kitty@dummy.com"
+        given(userService.registerUser(RegistrationCommand(
+                email = "hello.kitty@dummy.com",
+                password = "peterPan123",
+                firstName = "Alice",
+                lastName = "Someone"
+        ))).willReturn(User(
+                id = "abecadlo",
+                firstName = "Alice",
+                email = "hello.kitty@dummy.com",
+                lastName = "Someone"
         ))
         mvc.perform(MockMvcRequestBuilders.post("/api/registration")
                 .content("""
                     {
                         "email": "hello.kitty@dummy.com",
-                        "password": "peterPan123"
+                        "password": "peterPan123",
+                        "firstName": "Alice",
+                        "lastName": "Someone"
                     }
                 """.trim())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk)
-                .andExpect(MockMvcResultMatchers.content().string("""{"username":"alice@test.com","firstName":null,"lastName":null,"_links":{"self":{"href":"http://localhost/api/users/alice@test.com"}}}"""))
+                .andExpect(MockMvcResultMatchers.content().string("""{"username":"hello.kitty@dummy.com","firstName":"Alice","lastName":"Someone","_links":{"self":{"href":"http://localhost/api/users/abecadlo"}}}"""))
     }
 
 }

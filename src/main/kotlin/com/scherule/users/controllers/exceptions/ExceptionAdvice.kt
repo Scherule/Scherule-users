@@ -1,7 +1,7 @@
 package com.scherule.users.controllers.exceptions
 
 import com.scherule.users.exceptions.UserNotFoundException
-import com.scherule.users.services.UserCodeTranslator
+import com.scherule.users.domain.services.UserCodeTranslator
 import org.apache.commons.logging.LogFactory
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ControllerAdvice

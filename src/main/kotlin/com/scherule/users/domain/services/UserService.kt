@@ -1,18 +1,19 @@
-package com.scherule.users.services
+package com.scherule.users.domain.services
 
+import com.scherule.users.domain.commands.*
+import com.scherule.users.domain.models.AuthorityName
+import com.scherule.users.domain.models.User
+import com.scherule.users.domain.models.UserAccount
+import com.scherule.users.domain.models.UserCodeType
+import com.scherule.users.domain.repositories.AuthorityRepository
+import com.scherule.users.domain.repositories.UserCodesRepository
+import com.scherule.users.domain.repositories.UserRepository
+import com.scherule.users.exceptions.UserNotFoundException
+import com.scherule.users.exceptions.WrongConfirmationCodeException
 import com.scherule.users.management.SystemRunner
-import com.scherule.users.models.User
-import com.scherule.users.models.UserCodeType
-import com.scherule.users.repositories.UserCodesRepository
-import com.scherule.users.repositories.UserRepository
 import com.toptal.ggurgul.timezones.domain.events.PasswordResetCodeIssued
 import com.toptal.ggurgul.timezones.domain.events.RegistrationCodeIssuedEvent
 import com.toptal.ggurgul.timezones.exceptions.InvalidPasswordException
-import com.scherule.users.exceptions.UserNotFoundException
-import com.scherule.users.exceptions.WrongConfirmationCodeException
-import com.scherule.users.models.AuthorityName
-import com.scherule.users.models.UserAccount
-import com.scherule.users.repositories.AuthorityRepository
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -40,8 +41,8 @@ class UserService(
     }
 
     @Transactional
-    fun activateUser(code: String) = systemRunner.runInSystemContext {
-        val decodedCode = userCodeTranslator.readFrom(code)
+    fun activateUser(userActivationCommand: UserActivationCommand) = systemRunner.runInSystemContext {
+        val decodedCode = userCodeTranslator.readFrom(userActivationCommand.code)
         val userId: String = decodedCode.substringBefore(":")
 
         val user = Optional.of(userRepository.findOne(userId)).orElseThrow { IllegalStateException() }
@@ -49,28 +50,31 @@ class UserService(
         val userCode = userCodesRepository.findByUserAndType(user, UserCodeType.REGISTRATION_CONFIRMATION)
                 .orElseThrow { WrongConfirmationCodeException() }
 
-        if (code == userCode.code) {
+        if (userActivationCommand.code == userCode.code) {
             user.enabled = true
             userCodesRepository.delete(userCode)
         } else throw IllegalStateException()
     }
 
     @Transactional
-    fun changePasswordFor(user: User, oldPassword: String, newPassword: String) {
-        if (passwordEncoder.matches(oldPassword, user.password)) {
-            user.password = passwordEncoder.encode(newPassword);
+    fun changePasswordFor(passwordChangeCommand: PasswordChangeCommand) {
+        val actingUser = getActingUser()
+        if (passwordEncoder.matches(passwordChangeCommand.oldPassword, actingUser.password)) {
+            actingUser.password = passwordEncoder.encode(passwordChangeCommand.newPassword);
         } else {
             throw InvalidPasswordException();
         }
     }
 
     @Transactional
-    fun registerUser(email: String, password: String): User = systemRunner.runInSystemContext {
+    fun registerUser(registrationCommand: RegistrationCommand): User = systemRunner.runInSystemContext {
         val user = userRepository.save(User(
-                email = email,
-                password = passwordEncoder.encode(password),
+                email = registrationCommand.email!!,
+                password = passwordEncoder.encode(registrationCommand.email!!),
                 authorities = mutableListOf(authorityRepository.findOne(AuthorityName.ROLE_USER)),
-                enabled = false
+                enabled = false,
+                firstName = registrationCommand.firstName,
+                lastName = registrationCommand.lastName
         ))
 
         val userCode = userCodeFactory.generateFor(user, UserCodeType.REGISTRATION_CONFIRMATION)
@@ -90,9 +94,9 @@ class UserService(
 
     @Transactional
     @Throws(UserNotFoundException::class)
-    fun resetPassword(email: String) {
+    fun resetPassword(passwordResetCommand: PasswordResetCommand) {
         val user = systemRunner.runInSystemContext {
-            userRepository.findByEmail(email)
+            userRepository.findByEmail(passwordResetCommand.email)
         }.orElseThrow { UserNotFoundException() }
         val userCode = userCodeFactory.generateFor(user, UserCodeType.PASSWORD_RESET)
         userCodesRepository.save(userCode)
@@ -101,8 +105,8 @@ class UserService(
 
     @Transactional
     @Throws(WrongConfirmationCodeException::class)
-    fun confirmResetPassword(code: String, newPassword: String) = systemRunner.runInSystemContext {
-        val decodedCode = userCodeTranslator.readFrom(code)
+    fun confirmResetPassword(setNewPasswordRequest: SetNewPasswordRequest) = systemRunner.runInSystemContext {
+        val decodedCode = userCodeTranslator.readFrom(setNewPasswordRequest.code)
         val username: String = decodedCode.substringBefore(":")
 
         val user = Optional.of(userRepository.findOne(username)).orElseThrow { WrongConfirmationCodeException() }
@@ -110,8 +114,8 @@ class UserService(
         val userCode = userCodesRepository.findByUserAndType(user, UserCodeType.PASSWORD_RESET)
                 .orElseThrow { WrongConfirmationCodeException() }
 
-        if (code == userCode.code) {
-            user.password = passwordEncoder.encode(newPassword)
+        if (setNewPasswordRequest.code == userCode.code) {
+            user.password = passwordEncoder.encode(setNewPasswordRequest.newPassword)
             userCodesRepository.delete(userCode)
         } else throw WrongConfirmationCodeException()
     }

@@ -1,11 +1,11 @@
 package com.scherule.users.test.functional.managers
 
-import com.scherule.users.models.Authority
-import com.scherule.users.models.AuthorityName
-import com.scherule.users.models.User
-import com.scherule.users.repositories.AuthorityRepository
-import com.scherule.users.repositories.UserCodesRepository
-import com.scherule.users.repositories.UserRepository
+import com.scherule.users.domain.models.Authority
+import com.scherule.users.domain.models.AuthorityName
+import com.scherule.users.domain.models.User
+import com.scherule.users.domain.repositories.AuthorityRepository
+import com.scherule.users.domain.repositories.UserCodesRepository
+import com.scherule.users.domain.repositories.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestComponent
 import org.springframework.security.crypto.password.PasswordEncoder

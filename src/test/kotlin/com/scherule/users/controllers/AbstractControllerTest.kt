@@ -1,9 +1,9 @@
 package com.scherule.users.controllers
 
-import com.scherule.users.repositories.UserRepository
+import com.scherule.users.domain.repositories.UserRepository
 import com.scherule.users.security.WebSecurityConfig
-import com.scherule.users.services.UserIdentityBinder
-import com.scherule.users.services.UserService
+import com.scherule.users.domain.services.UserIdentityBinder
+import com.scherule.users.domain.services.UserService
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.boot.test.mock.mockito.MockBean

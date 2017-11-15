@@ -1,8 +1,8 @@
-package com.scherule.users.repositories
+package com.scherule.users.domain.repositories
 
-import com.scherule.users.models.User
-import com.scherule.users.models.UserCode
-import com.scherule.users.models.UserCodeType
+import com.scherule.users.domain.models.User
+import com.scherule.users.domain.models.UserCode
+import com.scherule.users.domain.models.UserCodeType
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 import java.util.*

@@ -1,4 +1,4 @@
-package com.scherule.users.models
+package com.scherule.users.domain.models
 
 import org.hibernate.validator.constraints.Length
 import java.io.Serializable

@@ -1,4 +1,4 @@
-package com.scherule.users.services
+package com.scherule.users.domain.services
 
 import org.springframework.stereotype.Component
 

@@ -1,7 +1,7 @@
-package com.scherule.users.services
+package com.scherule.users.domain.services
 
-import com.scherule.users.models.*
-import com.scherule.users.repositories.UserRepository
+import com.scherule.users.domain.models.*
+import com.scherule.users.domain.repositories.UserRepository
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.stereotype.Component
 import java.security.Principal

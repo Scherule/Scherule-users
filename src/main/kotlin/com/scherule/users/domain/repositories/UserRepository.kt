@@ -1,7 +1,7 @@
-package com.scherule.users.repositories
+package com.scherule.users.domain.repositories
 
-import com.scherule.users.models.IdentityType
-import com.scherule.users.models.User
+import com.scherule.users.domain.models.IdentityType
+import com.scherule.users.domain.models.User
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param

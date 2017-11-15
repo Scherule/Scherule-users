@@ -1,11 +1,11 @@
 package com.scherule.users.security
 
 import com.scherule.users.handlers.LocalAuthenticationFailureHandler
-import com.scherule.users.models.IdentityType
-import com.scherule.users.services.ExternalIdentityExtractor
-import com.scherule.users.services.UserIdentityBinder
-import com.scherule.users.services.UserPrincipal
-import com.scherule.users.services.UserPrincipalModel
+import com.scherule.users.domain.models.IdentityType
+import com.scherule.users.domain.services.ExternalIdentityExtractor
+import com.scherule.users.domain.services.UserIdentityBinder
+import com.scherule.users.domain.services.UserPrincipal
+import com.scherule.users.domain.services.UserPrincipalModel
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties

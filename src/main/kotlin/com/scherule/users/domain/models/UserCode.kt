@@ -1,4 +1,4 @@
-package com.scherule.users.models
+package com.scherule.users.domain.models
 
 import javax.persistence.*
 import javax.validation.constraints.NotNull

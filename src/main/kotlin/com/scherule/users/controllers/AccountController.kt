@@ -1,12 +1,11 @@
 package com.scherule.users.controllers
 
-import com.scherule.users.controllers.resources.PasswordChangeRequest
-import com.scherule.users.controllers.resources.PasswordResetRequest
-import com.scherule.users.controllers.resources.SetNewPasswordRequest
-import com.scherule.users.management.SystemRunner
-import com.scherule.users.services.UserService
+import com.scherule.users.domain.commands.PasswordChangeCommand
+import com.scherule.users.domain.commands.PasswordResetCommand
+import com.scherule.users.domain.commands.SetNewPasswordRequest
+import com.scherule.users.domain.services.UserService
 import com.scherule.users.exceptions.UserNotFoundException
-import com.scherule.users.models.UserAccount
+import com.scherule.users.domain.models.UserAccount
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -35,18 +34,16 @@ class AccountController
     @RequestMapping(value = "/password", method = arrayOf(RequestMethod.POST))
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun changePassword(
-            @RequestBody @Valid passwordChangeRequest: PasswordChangeRequest) {
-        val actingUser = userService.getActingUser();
-        userService.changePasswordFor(actingUser,
-                passwordChangeRequest.oldPassword!!, passwordChangeRequest.newPassword!!)
+            @RequestBody @Valid passwordChangeCommand: PasswordChangeCommand) {
+        userService.changePasswordFor(passwordChangeCommand)
     }
 
     @RequestMapping(value = "/password/reset", method = arrayOf(RequestMethod.POST))
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun resetPassword(
-            @RequestBody @Valid passwordResetRequest: PasswordResetRequest) {
+            @RequestBody @Valid passwordResetCommand: PasswordResetCommand) {
         try {
-            userService.resetPassword(passwordResetRequest.email!!)
+            userService.resetPassword(passwordResetCommand)
         } catch (e: UserNotFoundException) {
             // we don't want to give hints about other emails
         }
@@ -56,7 +53,7 @@ class AccountController
     @RequestMapping(value = "/password/reset/confirmation", method = arrayOf(RequestMethod.POST))
     fun confirmPasswordReset(
             @RequestBody @Valid passwordResetRequest: SetNewPasswordRequest) {
-        userService.confirmResetPassword(passwordResetRequest.code!!, passwordResetRequest.newPassword!!)
+        userService.confirmResetPassword(passwordResetRequest)
     }
 
     @ExceptionHandler(ConstraintViolationException::class)

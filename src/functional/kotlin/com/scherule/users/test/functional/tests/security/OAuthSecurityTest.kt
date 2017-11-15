@@ -1,7 +1,7 @@
 package com.scherule.users.test.functional.tests.security
 
 
-import com.scherule.users.models.User
+import com.scherule.users.domain.models.User
 import com.scherule.users.test.functional.AbstractFunctionalTest
 import com.scherule.users.test.functional.managers.UsersManager
 import io.restassured.RestAssured.given

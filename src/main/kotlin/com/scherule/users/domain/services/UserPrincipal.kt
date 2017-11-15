@@ -1,7 +1,7 @@
-package com.scherule.users.services
+package com.scherule.users.domain.services
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.scherule.users.models.User
+import com.scherule.users.domain.models.User
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.security.Principal
@@ -22,9 +22,7 @@ class UserPrincipalModel(
         val user: org.springframework.security.core.userdetails.User
 ) : UserPrincipal {
 
-    override fun id(): String? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun id() = user.username!!
 
     override fun getFirstName() = null
 

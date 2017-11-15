@@ -1,9 +1,9 @@
-package com.scherule.users.services
+package com.scherule.users.domain.services
 
 import com.scherule.users.exceptions.UserNotFoundException
 import com.scherule.users.management.SystemRunner
-import com.scherule.users.models.IdentityType
-import com.scherule.users.repositories.UserRepository
+import com.scherule.users.domain.models.IdentityType
+import com.scherule.users.domain.repositories.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.security.core.userdetails.UserDetailsService

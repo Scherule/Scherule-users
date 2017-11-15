@@ -1,10 +1,9 @@
 package com.scherule.users.test.functional.tests
 
-import com.scherule.users.models.User
-import com.scherule.users.models.UserCodeType
-import com.scherule.users.repositories.UserCodesRepository
-import com.scherule.users.repositories.UserRepository
-import com.scherule.users.services.UserService
+import com.scherule.users.domain.models.UserCodeType
+import com.scherule.users.domain.repositories.UserCodesRepository
+import com.scherule.users.domain.repositories.UserRepository
+import com.scherule.users.domain.services.UserService
 import com.scherule.users.test.functional.AbstractFunctionalTest
 import io.restassured.RestAssured
 import org.junit.Before

@@ -1,8 +1,8 @@
-package com.scherule.users.services
+package com.scherule.users.domain.services
 
-import com.scherule.users.models.User
-import com.scherule.users.models.UserCode
-import com.scherule.users.models.UserCodeType
+import com.scherule.users.domain.models.User
+import com.scherule.users.domain.models.UserCode
+import com.scherule.users.domain.models.UserCodeType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
