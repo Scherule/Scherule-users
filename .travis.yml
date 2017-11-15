@@ -1,0 +1,12 @@
+language: generic
+jobs:
+  include:
+    - stage: test
+      script:
+        - ./gradlew junitPlatformTest
+      env:
+        - BRANCH=${TRAVIS_BRANCH}
+branches:
+  only:
+  - master
+  - develop
