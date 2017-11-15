@@ -11,6 +11,7 @@ import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.assertj.core.api.Assertions.*
 
 
 class RegistrationTest : AbstractFunctionalTest() {
@@ -36,16 +37,18 @@ class RegistrationTest : AbstractFunctionalTest() {
     @Test
     fun userCanRegister() {
         RestAssured.given()
+                .spec(jsonContentType())
                 .body("""
                     {
-                        "email": "peter",
-                        "password": "peterPan123",
-                        "email": "gurgul.grzegorz@gmail.com"
+                        "email": "hello.kitty@dummy.com",
+                        "password": "peterPan123"
                     }
                 """.trim())
-                .post("/registration")
+                .post("/api/registration")
                 .then()
                 .statusCode(200)
+
+        assertThat(userRepository.findByEmail("hello.kitty@dummy.com")).isNotNull()
     }
 
     @Test
@@ -58,7 +61,7 @@ class RegistrationTest : AbstractFunctionalTest() {
                         "code": "${registrationCode}x"
                     }
                 """.trim())
-                .post("/registration/confirmation")
+                .post("/api/registration/confirmation")
                 .then()
                 .statusCode(403)
     }

@@ -10,12 +10,10 @@ import com.scherule.users.services.UserService
 import com.toptal.ggurgul.timezones.exceptions.RegistrationException
 import org.apache.commons.logging.LogFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 
 @RestController
@@ -29,15 +27,12 @@ constructor(
         private val authorityRepository: AuthorityRepository
 ) {
 
-    companion object {
-        private val LOG = LogFactory.getLog(RegistrationController::class.java)
-    }
-
     @RequestMapping(method = arrayOf(RequestMethod.POST))
+    @ResponseStatus(HttpStatus.OK)
     @Throws(RegistrationException::class)
     fun registerUser(
             @RequestBody registrationRequest: RegistrationRequest
-    ): ResponseEntity<*> {
+    ) {
         systemRunner.runInSystemContext {
             userService.registerUser(User(
                     email = registrationRequest.email!!,
@@ -45,26 +40,17 @@ constructor(
                     authorities = mutableListOf(authorityRepository.findOne(AuthorityName.ROLE_USER))
             ))
         }
-        return ResponseEntity.ok("Registered")
     }
 
     @RequestMapping(value = "/confirmation", method = arrayOf(RequestMethod.POST))
+    @ResponseStatus(HttpStatus.OK)
     @Throws(RegistrationException::class)
     fun confirmUserRegistration(
             @RequestBody registrationConfirmationRequest: RegistrationConfirmationRequest
-    ): ResponseEntity<Void> {
-        return try {
-            systemRunner.runInSystemContext {
-                userService.activateUser(registrationConfirmationRequest.code)
-            }
-            ResponseEntity.ok().build()
-        } catch (e: Exception) {
-            LOG.debug("Could not activate user", e)
-            respondWithUnauthorized()
+    ) {
+        systemRunner.runInSystemContext {
+            userService.activateUser(registrationConfirmationRequest.code)
         }
     }
-
-    private fun respondWithUnauthorized(): ResponseEntity<Void> =
-            ResponseEntity.status(403).build()
 
 }

@@ -4,6 +4,7 @@ import com.scherule.users.models.Authority
 import com.scherule.users.models.AuthorityName
 import com.scherule.users.models.User
 import com.scherule.users.repositories.AuthorityRepository
+import com.scherule.users.repositories.UserCodesRepository
 import com.scherule.users.repositories.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestComponent
@@ -14,6 +15,9 @@ class UsersManager {
 
     @Autowired
     private lateinit var userRepository: UserRepository
+
+    @Autowired
+    private lateinit var userCodesRepository: UserCodesRepository
 
     @Autowired
     private lateinit var authorityRepository: AuthorityRepository
@@ -29,6 +33,7 @@ class UsersManager {
     ))!!
 
     fun resetAll() {
+        userCodesRepository.deleteAll()
         userRepository.deleteAll()
         authorityRepository.deleteAll()
         authorityRepository.save(Authority(AuthorityName.ROLE_USER))

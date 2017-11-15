@@ -55,7 +55,7 @@ class OAuthSecurityTest : AbstractFunctionalTest() {
         val token = getToken(issueTokenRequest(dummyUser.email, "secret"))
         given()
                 .header(Header("Authorization", "Bearer x${token}x"))
-                .get("/auth/account")
+                .get("/api/users/me")
                 .then()
                 .statusCode(401)
     }

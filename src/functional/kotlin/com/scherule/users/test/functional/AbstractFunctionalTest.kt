@@ -2,6 +2,7 @@ package com.scherule.users.test.functional
 
 import com.scherule.users.test.functional.managers.UsersManager
 import io.restassured.RestAssured
+import io.restassured.builder.RequestSpecBuilder
 import org.junit.Before
 import org.junit.experimental.categories.Category
 import org.junit.runner.RunWith
@@ -41,12 +42,13 @@ abstract class AbstractFunctionalTest {
     private fun reset() {
         RestAssured.reset()
         RestAssured.port = appPort!!
-//        RestAssured.requestSpecification = RequestSpecBuilder()
-//                .setContentType("application/json")
-//                .setAccept("application/json")
-//                .build()
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
     }
+
+    fun jsonContentType() = RequestSpecBuilder()
+                .setContentType("application/json")
+                .setAccept("application/json")
+                .build()
 
     @Configuration
     @ComponentScan("com.scherule.users.test.functional.managers")
