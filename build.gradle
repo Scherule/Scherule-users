@@ -39,7 +39,6 @@ scheruleProject {
 junitPlatform {
     platformVersion junit_platform_version
     logManager 'java.util.logging.LogManager'
-//    enableStandardTestTask true
 
     filters {
         packages {
@@ -54,7 +53,7 @@ task functionalTest(
         group: 'Verification'
 ) {
     dependsOn testClasses
-    shouldRunAfter test
+    shouldRunAfter junitPlatformTest
 
     classpath = sourceSets.functional.runtimeClasspath
 
@@ -63,6 +62,8 @@ task functionalTest(
             sourceSets.functional.output.getClassesDirs().asPath,
             '--reports-dir', "${buildDir}/test-results/junit-functional"]
 }
+
+junitPlatformTest.finalizedBy functionalTest
 
 //task e2eTest(
 //        type: JavaExec,
