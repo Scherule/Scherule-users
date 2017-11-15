@@ -2,7 +2,10 @@ package com.scherule.users.security
 
 import com.scherule.users.handlers.LocalAuthenticationFailureHandler
 import com.scherule.users.models.IdentityType
-import com.scherule.users.services.*
+import com.scherule.users.services.ExternalIdentityExtractor
+import com.scherule.users.services.UserIdentityBinder
+import com.scherule.users.services.UserPrincipal
+import com.scherule.users.services.UserPrincipalModel
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties
@@ -22,6 +25,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.oauth2.client.OAuth2ClientContext
 import org.springframework.security.oauth2.client.OAuth2RestTemplate
@@ -52,7 +56,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     private lateinit var oauth2ClientContext: OAuth2ClientContext
 
     @Autowired
-    private lateinit var userDetailsService: LocalUserDetailsService
+    private lateinit var userDetailsService: UserDetailsService
 
     @Autowired
     private lateinit var eventPublisher: ApplicationEventPublisher
