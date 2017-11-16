@@ -1,5 +1,6 @@
 package com.scherule.users.test.functional.tests
 
+import com.scherule.users.domain.commands.RegistrationCommand
 import com.scherule.users.domain.models.UserCodeType
 import com.scherule.users.domain.repositories.UserCodesRepository
 import com.scherule.users.domain.repositories.UserRepository
@@ -104,8 +105,10 @@ class RegistrationTest : AbstractFunctionalTest() {
 
     private fun createUserAndGetConfirmationCode(): String {
         val user = userService.registerUser(
-                email = "someone@anyone.com",
-                password = "qwerty"
+                RegistrationCommand(
+                        email = "someone@anyone.com",
+                        password = "qwerty"
+                )
         )
 
         return codesRepository.findByUserAndType(user, UserCodeType.REGISTRATION_CONFIRMATION).map { it.code }.get()

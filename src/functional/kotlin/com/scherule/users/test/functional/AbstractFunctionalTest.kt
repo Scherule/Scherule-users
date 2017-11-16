@@ -22,7 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @Category(FunctionalTest::class)
 @RunWith(SpringRunner::class)
-@SpringBootTest(webEnvironment = RANDOM_PORT)
+@SpringBootTest(webEnvironment = RANDOM_PORT) // use none here...?
 @ActiveProfiles("dev", "test")
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 abstract class AbstractFunctionalTest {

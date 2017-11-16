@@ -102,6 +102,9 @@ dependencies {
     testRuntime "org.junit.platform:junit-platform-runner:$junit_platform_version"
 
     functionalCompile 'org.junit.platform:junit-platform-console:1.0.0-M5'
+    functionalCompile "info.cukes:cucumber-spring:$cucumber_version"
+    functionalCompile "info.cukes:cucumber-java8:$cucumber_version"
+    functionalCompile "info.cukes:cucumber-junit:$cucumber_version"
 }
 
 compileKotlin {
