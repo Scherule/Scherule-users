@@ -1,4 +1,4 @@
-package com.scherule.users.test.functional.builders
+package com.scherule.users.test.functional
 
 import com.scherule.users.domain.commands.RegistrationCommand
 

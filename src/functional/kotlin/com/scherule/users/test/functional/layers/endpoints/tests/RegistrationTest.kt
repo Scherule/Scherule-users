@@ -1,11 +1,11 @@
-package com.scherule.users.test.functional.tests
+package com.scherule.users.test.functional.layers.endpoints.tests
 
 import com.scherule.users.domain.commands.RegistrationCommand
 import com.scherule.users.domain.models.UserCodeType
 import com.scherule.users.domain.repositories.UserCodesRepository
 import com.scherule.users.domain.repositories.UserRepository
 import com.scherule.users.domain.services.UserService
-import com.scherule.users.test.functional.AbstractFunctionalTest
+import com.scherule.users.test.functional.layers.endpoints.EndpointTest
 import io.restassured.RestAssured
 import org.junit.Before
 import org.junit.Test
@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.assertj.core.api.Assertions.*
 
 
-class RegistrationTest : AbstractFunctionalTest() {
+class RegistrationTest : EndpointTest() {
 
     @Autowired
     private lateinit var userRepository: UserRepository

@@ -8,10 +8,10 @@ Feature: Registration feature
     But the user remains inactive
     And the user is sent an email with confirmation code
 
-#  Scenario: User can confirm his account
-#    Given the user has issued a valid registration request
-#    When he uses valid confirmation code
-#    Then the user becomes active
+  Scenario: User can confirm his account
+    Given the user has issued a valid registration request
+    When he confirms his account using valid confirmation code
+    Then the user becomes active
 #
 #  Scenario: User cannot activate his account using wrong confirmation code
 #    Given the user has issued a valid registration request

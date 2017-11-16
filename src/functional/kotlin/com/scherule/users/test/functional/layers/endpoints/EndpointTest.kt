@@ -1,5 +1,6 @@
-package com.scherule.users.test.functional
+package com.scherule.users.test.functional.layers.endpoints
 
+import com.scherule.users.test.functional.FunctionalTest
 import com.scherule.users.test.functional.managers.UsersManager
 import io.restassured.RestAssured
 import io.restassured.builder.RequestSpecBuilder
@@ -25,7 +26,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest(webEnvironment = RANDOM_PORT) // use none here...?
 @ActiveProfiles("dev", "test")
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-abstract class AbstractFunctionalTest {
+abstract class EndpointTest {
 
     @LocalServerPort
     private var appPort: Int? = null

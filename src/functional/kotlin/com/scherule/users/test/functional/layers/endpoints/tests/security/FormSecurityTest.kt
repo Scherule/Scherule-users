@@ -1,6 +1,6 @@
-package com.scherule.users.test.functional.tests.security
+package com.scherule.users.test.functional.layers.endpoints.tests.security
 
-import com.scherule.users.test.functional.AbstractFunctionalTest
+import com.scherule.users.test.functional.layers.endpoints.EndpointTest
 import com.scherule.users.test.functional.managers.UsersManager
 import io.restassured.RestAssured
 import io.restassured.authentication.FormAuthConfig
@@ -8,7 +8,7 @@ import org.hamcrest.Matchers
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 
-class FormSecurityTest : AbstractFunctionalTest() {
+class FormSecurityTest : EndpointTest() {
 
     @Autowired
     private lateinit var userManager: UsersManager

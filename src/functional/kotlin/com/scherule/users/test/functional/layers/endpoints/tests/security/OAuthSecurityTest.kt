@@ -1,8 +1,8 @@
-package com.scherule.users.test.functional.tests.security
+package com.scherule.users.test.functional.layers.endpoints.tests.security
 
 
 import com.scherule.users.domain.models.User
-import com.scherule.users.test.functional.AbstractFunctionalTest
+import com.scherule.users.test.functional.layers.endpoints.EndpointTest
 import com.scherule.users.test.functional.managers.UsersManager
 import io.restassured.RestAssured.given
 import io.restassured.http.Header
@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 
 
-class OAuthSecurityTest : AbstractFunctionalTest() {
+class OAuthSecurityTest : EndpointTest() {
 
     @Autowired
     private lateinit var usersManager: UsersManager

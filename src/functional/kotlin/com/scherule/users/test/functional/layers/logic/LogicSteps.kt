@@ -1,6 +1,8 @@
-package com.scherule.users.test.functional
+package com.scherule.users.test.functional.layers.logic
 
 import com.scherule.users.domain.models.User
+import com.scherule.users.test.functional.FunctionalTest
+import com.scherule.users.test.functional.FunctionalTestContext
 import cucumber.api.java8.En
 import org.junit.experimental.categories.Category
 import org.junit.runner.RunWith
@@ -20,7 +22,7 @@ import java.util.*
 @SpringBootTest
 @ActiveProfiles("dev", "test")
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-@ContextConfiguration(classes = arrayOf(CucumberContext::class))
+@ContextConfiguration(classes = arrayOf(CucumberContext::class, FunctionalTestContext::class))
 abstract class AbstractSteps : En
 
 @TestConfiguration
