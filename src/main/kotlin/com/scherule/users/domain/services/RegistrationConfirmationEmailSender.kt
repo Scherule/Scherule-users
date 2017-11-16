@@ -1,6 +1,6 @@
-package com.toptal.ggurgul.timezones.domain.services
+package com.scherule.users.domain.services
 
-import com.toptal.ggurgul.timezones.domain.events.RegistrationCodeIssuedEvent
+import com.scherule.users.events.RegistrationCodeIssuedEvent
 import com.scherule.users.domain.models.UserCode
 import org.apache.commons.logging.LogFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component
 
 
 @Component
-open class RegistrationConfirmationEmailSender
+class RegistrationConfirmationEmailSender
 @Autowired constructor(
         @Value("\${registration.confirmation.link}") private val confirmationLink: String,
         private val mailSender: MailSender,

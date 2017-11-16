@@ -2,7 +2,6 @@ package com.scherule.users.domain.services
 
 import com.toptal.ggurgul.timezones.domain.events.PasswordResetCodeIssued
 import com.scherule.users.domain.models.UserCode
-import com.toptal.ggurgul.timezones.domain.services.RegistrationConfirmationEmailSender
 import org.apache.commons.logging.LogFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Component
 
 
 @Component
-open class PasswordResetEmailSender
+class PasswordResetEmailSender
 @Autowired constructor(
         @Value("\${user.password.reset.email.link}") private val passwordResetLink: String,
         private val mailSender: MailSender,

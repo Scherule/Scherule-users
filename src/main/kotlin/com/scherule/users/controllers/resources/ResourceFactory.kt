@@ -1,7 +1,7 @@
 package com.scherule.users.controllers.resources
 
 import com.scherule.users.domain.models.User
-import com.scherule.users.domain.services.UserPrincipal
+import com.scherule.users.domain.models.UserPrincipal
 import org.springframework.stereotype.Component
 
 @Component

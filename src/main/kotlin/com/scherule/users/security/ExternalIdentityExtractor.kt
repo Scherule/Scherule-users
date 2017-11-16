@@ -1,7 +1,8 @@
-package com.scherule.users.domain.services
+package com.scherule.users.security
 
 import com.scherule.users.domain.models.ExternalPrincipal
 import com.scherule.users.domain.models.IdentityType
+import com.scherule.users.domain.services.IdentityBinder
 import org.springframework.boot.autoconfigure.security.oauth2.resource.AuthoritiesExtractor
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor
 import org.springframework.security.core.GrantedAuthority

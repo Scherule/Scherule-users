@@ -1,4 +1,4 @@
-package com.toptal.ggurgul.timezones.domain.events
+package com.scherule.users.events
 
 import com.scherule.users.domain.models.UserCode
 import org.springframework.context.ApplicationEvent

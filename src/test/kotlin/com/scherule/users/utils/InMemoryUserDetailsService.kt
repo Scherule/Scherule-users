@@ -1,6 +1,6 @@
 package com.scherule.users.utils
 
-import com.scherule.users.domain.services.UserPrincipal
+import com.scherule.users.domain.models.UserPrincipal
 import org.springframework.security.core.userdetails.UserDetailsService
 
 class InMemoryUserDetailsService(

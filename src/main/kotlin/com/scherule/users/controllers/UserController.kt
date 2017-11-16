@@ -4,7 +4,7 @@ import com.scherule.users.controllers.resources.ResourceFactory
 import com.scherule.users.exceptions.UserNotFoundException
 import com.scherule.users.domain.models.User
 import com.scherule.users.domain.repositories.UserRepository
-import com.scherule.users.domain.services.UserPrincipal
+import com.scherule.users.domain.models.UserPrincipal
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.hateoas.EntityLinks
 import org.springframework.hateoas.ExposesResourceFor

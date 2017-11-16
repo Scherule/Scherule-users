@@ -1,7 +1,6 @@
-package com.scherule.users.domain.services
+package com.scherule.users.domain.models
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.scherule.users.domain.models.User
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.security.Principal

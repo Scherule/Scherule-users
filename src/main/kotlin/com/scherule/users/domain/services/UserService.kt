@@ -1,10 +1,7 @@
 package com.scherule.users.domain.services
 
 import com.scherule.users.domain.commands.*
-import com.scherule.users.domain.models.AuthorityName
-import com.scherule.users.domain.models.User
-import com.scherule.users.domain.models.UserAccount
-import com.scherule.users.domain.models.UserCodeType
+import com.scherule.users.domain.models.*
 import com.scherule.users.domain.repositories.AuthorityRepository
 import com.scherule.users.domain.repositories.UserCodesRepository
 import com.scherule.users.domain.repositories.UserRepository
@@ -12,7 +9,7 @@ import com.scherule.users.exceptions.UserNotFoundException
 import com.scherule.users.exceptions.WrongConfirmationCodeException
 import com.scherule.users.management.SystemRunner
 import com.toptal.ggurgul.timezones.domain.events.PasswordResetCodeIssued
-import com.toptal.ggurgul.timezones.domain.events.RegistrationCodeIssuedEvent
+import com.scherule.users.events.RegistrationCodeIssuedEvent
 import com.toptal.ggurgul.timezones.exceptions.InvalidPasswordException
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.security.core.context.SecurityContextHolder
