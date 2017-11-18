@@ -1,14 +1,15 @@
 package com.scherule.users.controllers
 
 import com.scherule.users.domain.repositories.UserRepository
-import com.scherule.users.security.WebSecurityConfig
 import com.scherule.users.domain.services.UserIdentityBinder
 import com.scherule.users.domain.services.UserService
+import com.scherule.users.security.WebSecurityConfig
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Import
+import org.springframework.mail.MailSender
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
@@ -33,6 +34,9 @@ abstract class AbstractControllerTest {
 
     @MockBean
     protected lateinit var userService: UserService
+
+    @MockBean
+    protected lateinit var mailSender: MailSender
 
 }
 
