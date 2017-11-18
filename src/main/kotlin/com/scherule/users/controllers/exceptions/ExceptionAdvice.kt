@@ -2,6 +2,7 @@ package com.scherule.users.controllers.exceptions
 
 import com.scherule.users.exceptions.UserNotFoundException
 import com.scherule.users.domain.services.UserCodesService
+import com.scherule.users.domain.services.UserService
 import org.apache.commons.logging.LogFactory
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpStatus
@@ -28,6 +29,12 @@ class ExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST, reason = "The code used is malformed or no longer is active.")
     @ExceptionHandler(UserCodesService.MalformedUserCodeException::class)
     fun malformedUserCode() {
+
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST, reason = "This e-mail address is restricted or is already used. Try to log in.")
+    @ExceptionHandler(UserService.DuplicateUserException::class)
+    fun duplicateUser() {
 
     }
 

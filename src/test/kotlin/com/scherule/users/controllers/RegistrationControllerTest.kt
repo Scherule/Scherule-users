@@ -4,6 +4,7 @@ import com.scherule.users.domain.commands.RegistrationCommand
 import com.scherule.users.domain.commands.UserActivationCommand
 import com.scherule.users.domain.models.User
 import com.scherule.users.domain.services.UserCodesService
+import com.scherule.users.domain.services.UserService
 import org.junit.Before
 import org.junit.Test
 import org.mockito.BDDMockito.contains
@@ -70,6 +71,25 @@ class RegistrationControllerTest : AbstractControllerTest() {
 
     @Test
     @Throws(Exception::class)
+    fun postRegister_duplicateUser_200() {
+        given(userService.registerUser(anyObject())).willThrow(UserService.DuplicateUserException())
+        mvc.perform(MockMvcRequestBuilders.post("/api/registration")
+                .content("""
+                    {
+                        "email": "hello.kitty@dummy.com",
+                        "password": "peterPan123",
+                        "firstName": "Alice",
+                        "lastName": "Someone"
+                    }
+                """.trim())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest)
+                .andExpect(MockMvcResultMatchers.status().reason("This e-mail address is restricted or is already used. Try to log in."))
+    }
+
+    @Test
+    @Throws(Exception::class)
     fun postRegistrationConfirmation_valid_200() {
         mvc.perform(MockMvcRequestBuilders.post("/api/registration/confirmation")
                 .content("""
@@ -85,7 +105,7 @@ class RegistrationControllerTest : AbstractControllerTest() {
     @Test
     @Throws(Exception::class)
     fun postRegistrationConfirmation_invalidCode_400() {
-        given(userService.activateUser(UserActivationCommand("abcdef"))).willThrow(UserCodesService.MalformedUserCodeException())
+        given(userService.activateUser(anyObject())).willThrow(UserCodesService.MalformedUserCodeException())
         mvc.perform(MockMvcRequestBuilders.post("/api/registration/confirmation")
                 .content("""
                     {
@@ -96,6 +116,10 @@ class RegistrationControllerTest : AbstractControllerTest() {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError)
                 .andExpect(MockMvcResultMatchers.status().reason("The code used is malformed or no longer is active."))
+    }
+
+    private fun <T> anyObject(): T {
+        return Mockito.any<T>()
     }
 
 }

@@ -49,17 +49,21 @@ class UserService(
 
     @Transactional
     fun registerUser(registrationCommand: RegistrationCommand): User = systemRunner.runInSystemContext {
-        val user = userRepository.save(User(
-                email = registrationCommand.email,
-                password = passwordEncoder.encode(registrationCommand.email),
-                authorities = mutableListOf(authorityRepository.findOne(AuthorityName.ROLE_USER)),
-                enabled = false,
-                firstName = registrationCommand.firstName,
-                lastName = registrationCommand.lastName
-        ))
-        val userCode = userCodesService.issueUserCode(user, UserCodeType.REGISTRATION_CONFIRMATION)
-        eventPublisher.publishEvent(RegistrationCodeIssuedEvent(userCode))
-        user
+        try {
+            val user = userRepository.save(User(
+                    email = registrationCommand.email,
+                    password = passwordEncoder.encode(registrationCommand.email),
+                    authorities = mutableListOf(authorityRepository.findOne(AuthorityName.ROLE_USER)),
+                    enabled = false,
+                    firstName = registrationCommand.firstName,
+                    lastName = registrationCommand.lastName
+            ))
+            val userCode = userCodesService.issueUserCode(user, UserCodeType.REGISTRATION_CONFIRMATION)
+            eventPublisher.publishEvent(RegistrationCodeIssuedEvent(userCode))
+            user
+        } catch(e: Exception) {
+            throw DuplicateUserException(e)
+        }
     }
 
     @Transactional
@@ -95,5 +99,7 @@ class UserService(
             eventPublisher.publishEvent(PasswordReset(it.user!!))
         }
     }
+
+    class DuplicateUserException(e: Exception = IllegalStateException()) : RuntimeException(e)
 
 }
