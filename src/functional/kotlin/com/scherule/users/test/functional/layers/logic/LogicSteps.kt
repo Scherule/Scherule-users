@@ -1,6 +1,7 @@
 package com.scherule.users.test.functional.layers.logic
 
 import com.scherule.users.domain.models.User
+import com.scherule.users.domain.models.UserCode
 import com.scherule.users.test.functional.FunctionalTest
 import com.scherule.users.test.functional.FunctionalTestContext
 import cucumber.api.java8.En
@@ -37,5 +38,6 @@ class CucumberContext {
 class StepContext {
 
     var user: Optional<User> = Optional.empty()
+    var userCode: Optional<UserCode> = Optional.empty()
 
 }

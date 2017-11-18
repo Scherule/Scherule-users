@@ -5,15 +5,15 @@ import com.scherule.users.domain.models.UserCodeType
 import com.scherule.users.domain.repositories.UserCodesRepository
 import com.scherule.users.domain.repositories.UserRepository
 import com.scherule.users.domain.services.UserService
+import com.scherule.users.test.functional.aRegistrationCommand
 import com.scherule.users.test.functional.layers.logic.AbstractSteps
 import com.scherule.users.test.functional.layers.logic.StepContext
-import com.scherule.users.test.functional.aRegistrationCommand
 import com.scherule.users.test.functional.managers.UsersManager
 import org.assertj.core.api.Assertions.assertThat
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.mock.mockito.SpyBean
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.mail.MailSender
 import org.springframework.mail.SimpleMailMessage
 
@@ -24,7 +24,7 @@ internal class RegistrationSteps
         private val userRepository: UserRepository,
         private val userCodesRepository: UserCodesRepository,
         private val stepContext: StepContext,
-        @SpyBean private val mailSender: MailSender
+        @MockBean private val mailSender: MailSender
 ) : AbstractSteps() {
 
     var registrationCommandBuilder = aRegistrationCommand()
@@ -44,8 +44,12 @@ internal class RegistrationSteps
         }
 
         Given("the user has issued a valid registration request") {
-            fillRegistrationRequest()
-            issueRegistrationRequest()
+            issueValidRegistrationRequest()
+        }
+
+        Given("the user has already activated his account") {
+            issueValidRegistrationRequest()
+            fetchUserCodeAndConfirm()
             refreshActingUser()
         }
 
@@ -54,9 +58,16 @@ internal class RegistrationSteps
         }
 
         When("he confirms his account using valid confirmation code") {
-            val code = userCodesRepository.findByUserAndType(stepContext.user.get(), UserCodeType.REGISTRATION_CONFIRMATION)
-            userService.activateUser(UserActivationCommand(code.map { it.code }.get()))
+            fetchUserCodeAndConfirm()
+        }
+
+        When("he confirms his account using invalid confirmation code") {
+            try { userService.activateUser(UserActivationCommand("invalid")) } catch (e: Exception) {}
             refreshActingUser()
+        }
+
+        When("he uses the confirmation code already used for confirming the account") {
+            confirmAccount()
         }
 
         Then("the user is created") {
@@ -68,8 +79,12 @@ internal class RegistrationSteps
             assertThat(stepContext.user.map { it.enabled }.get()).isFalse()
         }
 
-        Then("the user becomes active") {
+        Then("the user becomes active|the user is still active") {
             assertThat(stepContext.user.map { it.enabled }.get()).isTrue()
+        }
+
+        Then("he receives an error") {
+            assertThat(stepContext.user).isNotNull()
         }
 
         Then("the user is sent an email with confirmation code") {
@@ -80,6 +95,26 @@ internal class RegistrationSteps
             assertThat(capturedMessage.value.text).contains("If it is you who registered please follow the link")
         }
 
+        Then("this action has no effect") {
+            assertThat(stepContext.user.map { it.enabled }.get()).isTrue()
+        }
+
+    }
+
+    private fun fetchUserCodeAndConfirm() {
+        stepContext.userCode = userCodesRepository.findByUserAndType(stepContext.user.map { it.id }.get(), UserCodeType.REGISTRATION_CONFIRMATION)
+        confirmAccount()
+        refreshActingUser()
+    }
+
+    private fun confirmAccount() {
+        try { userService.activateUser(UserActivationCommand(stepContext.userCode.map { it.code }.get())) } catch(e: Exception) {}
+    }
+
+    private fun issueValidRegistrationRequest() {
+        fillRegistrationRequest()
+        issueRegistrationRequest()
+        refreshActingUser()
     }
 
     private fun refreshActingUser() {

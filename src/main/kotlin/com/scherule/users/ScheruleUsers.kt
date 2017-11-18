@@ -26,6 +26,7 @@ import org.springframework.web.servlet.config.annotation.ContentNegotiationConfi
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
+import java.security.SecureRandom
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -59,6 +60,9 @@ class ScheruleUsers : WebMvcConfigurerAdapter() {
     override fun addViewControllers(registry: ViewControllerRegistry) {
         registry.addViewController("/").setViewName("forward:/index.html")
     }
+
+    @Bean
+    fun random() = SecureRandom()
 
     @Bean
     fun mailSender(

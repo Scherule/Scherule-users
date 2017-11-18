@@ -1,6 +1,6 @@
 package com.scherule.users.domain.services
 
-import com.toptal.ggurgul.timezones.domain.events.PasswordResetCodeIssued
+import com.scherule.users.events.PasswordResetCodeIssued
 import com.scherule.users.domain.models.UserCode
 import org.apache.commons.logging.LogFactory
 import org.springframework.beans.factory.annotation.Autowired

@@ -1,7 +1,7 @@
 package com.scherule.users.controllers.exceptions
 
 import com.scherule.users.exceptions.UserNotFoundException
-import com.scherule.users.domain.services.UserCodeTranslator
+import com.scherule.users.domain.services.UserCodesService
 import org.apache.commons.logging.LogFactory
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -23,7 +23,7 @@ class ExceptionAdvice {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)  // 409
-    @ExceptionHandler(UserCodeTranslator.MalformedUserCodeException::class)
+    @ExceptionHandler(UserCodesService.MalformedUserCodeException::class)
     fun malformedUserCode(){
         LOG.debug("Malformed user code.")
     }

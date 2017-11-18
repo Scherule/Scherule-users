@@ -12,15 +12,13 @@ Feature: Registration feature
     Given the user has issued a valid registration request
     When he confirms his account using valid confirmation code
     Then the user becomes active
-#
-#  Scenario: User cannot activate his account using wrong confirmation code
-#    Given the user has issued a valid registration request
-#    When he uses invalid confirmation code
-#    Then he receives an error
-#    And the user is still inactive
-#
-#  Scenario: User cannot use confirmation code twice
-#    Given the user has already activated his account
-#    When he uses the confirmation code used for confirming the account
-#    Then he receives an error
-#    And the user is still active
+
+  Scenario: User cannot activate his account using wrong confirmation code
+    Given the user has issued a valid registration request
+    When he confirms his account using invalid confirmation code
+    Then the user remains inactive
+
+  Scenario: Using confirmation code twice has no effect
+    Given the user has already activated his account
+    When he uses the confirmation code already used for confirming the account
+    Then this action has no effect
