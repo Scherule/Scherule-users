@@ -8,6 +8,7 @@ import com.scherule.users.domain.models.Account
 import com.scherule.users.domain.models.User
 import com.scherule.users.domain.services.UserService
 import com.scherule.users.exceptions.UserNotFoundException
+import io.swagger.annotations.Api
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.hateoas.EntityLinks
 import org.springframework.hateoas.ExposesResourceFor
@@ -20,6 +21,7 @@ import javax.validation.Valid
  * Virtual representation of the user from his own perspective.
  * Not everything is exposed, some different things are present.
  */
+@Api("account", description = "Operations to manage your own account.", tags = arrayOf("account"))
 @RestController
 @RequestMapping("/api/account")
 @ExposesResourceFor(Account::class)

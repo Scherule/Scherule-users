@@ -5,6 +5,7 @@ import com.scherule.users.domain.models.User
 import com.scherule.users.domain.repositories.UserRepository
 import com.scherule.users.domain.services.UserService
 import com.scherule.users.exceptions.UserNotFoundException
+import io.swagger.annotations.Api
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PagedResourcesAssembler
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod
  *
  * https://stackoverflow.com/questions/16790371/spring-mvc-3-return-a-spring-data-page-as-json/16794740#16794740
  */
+@Api("users", description = "Operations for user management.", tags = arrayOf("users"))
 @RestController
 @RequestMapping("/api/users")
 @ExposesResourceFor(User::class)
