@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.*
 import javax.websocket.server.PathParam
 import org.springframework.hateoas.mvc.ControllerLinkBuilder.*
+import org.springframework.web.bind.annotation.RequestMethod
 
 /**
  *
@@ -35,17 +36,17 @@ class UserController
     /**
      * This endpoint gets called whenever the user authenticates on a page having no redirect back link.
      */
-    @RequestMapping(path = arrayOf("/me"), produces = arrayOf(MediaType.ALL_VALUE))
+    @RequestMapping(path = arrayOf("/me"), method = arrayOf(RequestMethod.GET), produces = arrayOf(MediaType.ALL_VALUE))
     fun getUser() = userResourceAssembler.toResource(userService.getActingUser()).apply {
         add(linkTo(UserController::class.java).slash("/me").withSelfRel())
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping("/")
+    @RequestMapping("/", method = arrayOf(RequestMethod.GET))
     fun getUserList(page: Pageable) = pagedUsersResourceAssembler.toResource(userRepository.findAll(page))
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping("/:id")
+    @RequestMapping("/:id", method = arrayOf(RequestMethod.GET))
     fun getUserById(@PathParam("id") id: String) = userResourceAssembler.toResource(
             Optional.ofNullable(userRepository.findOne(id)).orElseThrow { UserNotFoundException() }
     )

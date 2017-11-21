@@ -21,6 +21,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl
 import org.springframework.security.access.expression.SecurityExpressionRoot
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
@@ -30,6 +31,7 @@ import org.springframework.web.servlet.config.annotation.ContentNegotiationConfi
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
+import springfox.documentation.swagger2.annotations.EnableSwagger2
 import java.security.SecureRandom
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -44,6 +46,7 @@ import javax.servlet.http.HttpServletResponse
 @EnableEntityLinks
 @RestController
 @EnableSpringDataWebSupport
+@EnableSwagger2
 class ScheruleUsers : WebMvcConfigurerAdapter() {
 
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
@@ -52,9 +55,16 @@ class ScheruleUsers : WebMvcConfigurerAdapter() {
                 .addResourceLocations("classpath:/static/assets/");
     }
 
-    @RequestMapping(value = "/{[path:[^\\.]*}")
+    /**
+     * Match frontend endpoints to get rid of # in the UI URLs
+     */
+    @RequestMapping(method = arrayOf(RequestMethod.GET), path = arrayOf(
+            "/login*",
+            "/register*",
+            "/welcome*"
+    ))
     fun redirect(request: HttpServletRequest, response: HttpServletResponse) {
-        request.getRequestDispatcher("/index.html").forward(request, response)
+        request.getRequestDispatcher("/").forward(request, response)
     }
 
     override fun addArgumentResolvers(argumentResolvers: MutableList<HandlerMethodArgumentResolver>) {
@@ -117,13 +127,13 @@ class ScheruleUsers : WebMvcConfigurerAdapter() {
 
     @Bean
     fun corsFilter(): CorsFilter {
-        val source = UrlBasedCorsConfigurationSource();
-        val config = CorsConfiguration();
-        config.allowCredentials = true;
-        config.addAllowedOrigin("*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        source.registerCorsConfiguration("/**", config);
+        val source = UrlBasedCorsConfigurationSource()
+        val config = CorsConfiguration()
+        config.allowCredentials = true
+        config.addAllowedOrigin("*")
+        config.addAllowedHeader("*")
+        config.addAllowedMethod("*")
+        source.registerCorsConfiguration("/**", config)
         return CorsFilter(source)
     }
 

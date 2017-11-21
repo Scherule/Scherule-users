@@ -80,7 +80,10 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                         "/login",
                         "/register",
                         "/assets/**",
-                        "/webjars/**"
+                        "/webjars/**",
+                        "/health/**",
+                        "/swagger*/**",
+                        "/**/api-docs/**"
                 ).permitAll()
                 .antMatchers(
                         HttpMethod.POST,
