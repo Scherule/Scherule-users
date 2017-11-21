@@ -21,10 +21,8 @@ class UserIdentityBinder(
 ) : IdentityBinder {
 
     override fun convertPrincipal(principal: ExternalPrincipal): UserPrincipal {
-        val boundUser = userDetailsService.findByIdentity(principal.identity, principal.identityType)
-                .orElseGet { bindOrCreateUsingEmail(principal) }
-
-        return UserPrincipalEntity(boundUser)
+        return UserPrincipalEntity(userDetailsService.findByIdentity(principal.identity, principal.identityType)
+                .orElseGet { bindOrCreateUsingEmail(principal) })
     }
 
     /**

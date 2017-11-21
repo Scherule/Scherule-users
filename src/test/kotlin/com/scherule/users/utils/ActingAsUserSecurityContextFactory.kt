@@ -1,6 +1,6 @@
 package com.scherule.users.utils
 
-import com.scherule.users.domain.models.UserPrincipalModel
+import com.scherule.users.domain.models.PredefinedUserPrincipal
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContext
@@ -15,9 +15,9 @@ class ActingAsUserSecurityContextFactory : WithSecurityContextFactory<ActingAsUs
     override fun createSecurityContext(customUser: ActingAsUser): SecurityContext {
         val context = SecurityContextHolder.createEmptyContext()
 
-        val principal = UserPrincipalModel(User(
+        val principal = PredefinedUserPrincipal(
                 customUser.username, "", Arrays.stream(customUser.roles).map { SimpleGrantedAuthority(it) }.toList()
-        ))
+        )
 
         val auth = UsernamePasswordAuthenticationToken(principal, "password", principal.authorities)
         context.authentication = auth

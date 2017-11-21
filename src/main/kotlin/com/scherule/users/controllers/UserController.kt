@@ -1,54 +1,53 @@
 package com.scherule.users.controllers
 
-import com.scherule.users.controllers.resources.ResourceFactory
-import com.scherule.users.exceptions.UserNotFoundException
+import com.scherule.users.controllers.resources.UserResourceAssembler
 import com.scherule.users.domain.models.User
 import com.scherule.users.domain.repositories.UserRepository
-import com.scherule.users.domain.models.UserPrincipal
+import com.scherule.users.domain.services.UserService
+import com.scherule.users.exceptions.UserNotFoundException
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.hateoas.EntityLinks
+import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PagedResourcesAssembler
 import org.springframework.hateoas.ExposesResourceFor
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.oauth2.provider.OAuth2Authentication
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.security.Principal
 import java.util.*
 import javax.websocket.server.PathParam
+import org.springframework.hateoas.mvc.ControllerLinkBuilder.*
 
-
+/**
+ *
+ * https://stackoverflow.com/questions/16790371/spring-mvc-3-return-a-spring-data-page-as-json/16794740#16794740
+ */
 @RestController
 @RequestMapping("/api/users")
 @ExposesResourceFor(User::class)
-class UserController {
-
-    @Autowired
-    private lateinit var userRepository: UserRepository
-
-    @Autowired
-    private lateinit var resourceFactory: ResourceFactory
-
-    @Autowired
-    private lateinit var entityLinks: EntityLinks
+class UserController
+@Autowired constructor(
+        private val userRepository: UserRepository,
+        private val userService: UserService,
+        private val userResourceAssembler: UserResourceAssembler,
+        private val pagedUsersResourceAssembler: PagedResourcesAssembler<User>
+) {
 
     /**
      * This endpoint gets called whenever the user authenticates on a page having no redirect back link.
      */
     @RequestMapping(path = arrayOf("/me"), produces = arrayOf(MediaType.ALL_VALUE))
-    fun user(principal: Principal) = resourceFactory.toUserResource(when (principal) {
-        is OAuth2Authentication -> principal.userAuthentication.principal
-        is UsernamePasswordAuthenticationToken -> principal.principal
-        else -> principal
-    } as UserPrincipal).apply {
-        add(entityLinks.linkToSingleResource(User::class.java, username))
+    fun getUser() = userResourceAssembler.toResource(userService.getActingUser()).apply {
+        add(linkTo(UserController::class.java).slash("/me").withSelfRel())
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping("/:email")
-    fun getById(@PathParam("id") id: String): User {
-        return Optional.ofNullable(userRepository.findOne(id)).orElseThrow { UserNotFoundException() }
-    }
+    @RequestMapping("/")
+    fun getUserList(page: Pageable) = pagedUsersResourceAssembler.toResource(userRepository.findAll(page))
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping("/:id")
+    fun getUserById(@PathParam("id") id: String) = userResourceAssembler.toResource(
+            Optional.ofNullable(userRepository.findOne(id)).orElseThrow { UserNotFoundException() }
+    )
 
 }

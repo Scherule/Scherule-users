@@ -2,9 +2,9 @@ package com.scherule.users.security
 
 import com.scherule.users.handlers.LocalAuthenticationFailureHandler
 import com.scherule.users.domain.models.IdentityType
+import com.scherule.users.domain.models.PredefinedUserPrincipal
 import com.scherule.users.domain.services.UserIdentityBinder
 import com.scherule.users.domain.models.UserPrincipal
-import com.scherule.users.domain.models.UserPrincipalModel
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties
@@ -23,7 +23,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.oauth2.client.OAuth2ClientContext
@@ -112,11 +111,11 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
     @Bean
     fun predefinedUsers(): Map<String, UserPrincipal> = listOf(adminUser()).map {
-        UserPrincipalModel(User(
-                it.username,
-                passwordEncoder().encode(it.password),
-                mutableListOf(SimpleGrantedAuthority("ADMIN"))
-        ))
+        PredefinedUserPrincipal(
+                id = it.username,
+                userPassword =  passwordEncoder().encode(it.password),
+                userAuthorities = listOf(SimpleGrantedAuthority("ADMIN"))
+        )
     }.associateBy { it.username }
 
     @Bean

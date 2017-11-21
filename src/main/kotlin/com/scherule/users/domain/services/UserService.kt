@@ -13,8 +13,10 @@ import com.scherule.users.exceptions.WrongConfirmationCodeException
 import com.scherule.users.management.SystemRunner
 import com.toptal.ggurgul.timezones.exceptions.InvalidPasswordException
 import org.springframework.context.ApplicationEventPublisher
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.oauth2.provider.OAuth2Authentication
 import org.springframework.stereotype.Service
 import java.util.*
 import javax.transaction.Transactional
@@ -23,7 +25,6 @@ import javax.transaction.Transactional
 class UserService(
         private val userRepository: UserRepository,
         private val userCodesService: UserCodesService,
-        private val userCodesRepository: UserCodesRepository,
         private val eventPublisher: ApplicationEventPublisher,
         private val passwordEncoder: PasswordEncoder,
         private val systemRunner: SystemRunner,
@@ -32,8 +33,13 @@ class UserService(
 
     fun getActingUser(): User {
         val auth = SecurityContextHolder.getContext().authentication
-        return Optional.ofNullable(userRepository.findOne((auth.principal as UserPrincipal).id())).orElseThrow {
-            IllegalStateException("No user found")
+        val principal = when (auth) {
+            is OAuth2Authentication -> auth.userAuthentication.principal
+            is UsernamePasswordAuthenticationToken -> auth.principal
+            else -> auth
+        } as UserPrincipal
+        return Optional.ofNullable(userRepository.findOne(principal.id())).orElseThrow {
+            IllegalStateException("No user context attached. Should never be called in this state.")
         }
     }
 
@@ -74,10 +80,10 @@ class UserService(
     }
 
     @Transactional
-    fun updateProfile(userAccount: UserAccount) {
+    fun updateProfile(account: Account) {
         getActingUser().apply {
-            firstName = userAccount.firstName
-            lastName = userAccount.lastName
+            firstName = account.firstName
+            lastName = account.lastName
         }
     }
 

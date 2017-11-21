@@ -42,7 +42,7 @@ class RegistrationControllerTest : AbstractControllerTest() {
 
     @Test
     @Throws(Exception::class)
-    fun postRegister_valid_200() {
+    fun postRegister_valid_201() {
         given(userService.registerUser(RegistrationCommand(
                 email = "hello.kitty@dummy.com",
                 password = "peterPan123",
@@ -65,13 +65,12 @@ class RegistrationControllerTest : AbstractControllerTest() {
                 """.trim())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andExpect(MockMvcResultMatchers.content().string("""{"username":"hello.kitty@dummy.com","firstName":"Alice","lastName":"Someone","_links":{"self":{"href":"http://localhost/api/users/abecadlo"}}}"""))
+                .andExpect(MockMvcResultMatchers.status().isCreated)
     }
 
     @Test
     @Throws(Exception::class)
-    fun postRegister_duplicateUser_200() {
+    fun postRegister_duplicateUser_4xx() {
         given(userService.registerUser(anyObject())).willThrow(UserService.DuplicateUserException())
         mvc.perform(MockMvcRequestBuilders.post("/api/registration")
                 .content("""

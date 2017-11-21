@@ -8,8 +8,11 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.data.repository.query.spi.EvaluationContextExtension
 import org.springframework.data.repository.query.spi.EvaluationContextExtensionSupport
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver
+import org.springframework.data.web.config.EnableSpringDataWebSupport
 import org.springframework.hateoas.config.EnableEntityLinks
 import org.springframework.http.MediaType
 import org.springframework.mail.MailSender
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.springframework.web.filter.CorsFilter
+import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry
@@ -39,17 +43,26 @@ import javax.servlet.http.HttpServletResponse
 @EnableEurekaClient
 @EnableEntityLinks
 @RestController
+@EnableSpringDataWebSupport
 class ScheruleUsers : WebMvcConfigurerAdapter() {
 
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
         registry
-          .addResourceHandler("/assets/**")
-          .addResourceLocations("classpath:/static/assets/");
+                .addResourceHandler("/assets/**")
+                .addResourceLocations("classpath:/static/assets/");
     }
 
     @RequestMapping(value = "/{[path:[^\\.]*}")
     fun redirect(request: HttpServletRequest, response: HttpServletResponse) {
         request.getRequestDispatcher("/index.html").forward(request, response)
+    }
+
+    override fun addArgumentResolvers(argumentResolvers: MutableList<HandlerMethodArgumentResolver>) {
+        val resolver = PageableHandlerMethodArgumentResolver()
+        resolver.setMaxPageSize(100);
+//        resolver.setOneIndexedParameters(true);
+        argumentResolvers.add(resolver);
+        super.addArgumentResolvers(argumentResolvers);
     }
 
     @Bean

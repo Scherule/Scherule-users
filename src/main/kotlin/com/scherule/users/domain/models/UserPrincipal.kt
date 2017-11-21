@@ -1,6 +1,7 @@
 package com.scherule.users.domain.models
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.security.Principal
@@ -8,41 +9,11 @@ import java.security.Principal
 
 interface UserPrincipal : UserDetails, Principal {
 
-    fun id(): String?
+    fun id(): String
 
     fun getFirstName(): String?
 
     fun getLastName(): String?
-
-}
-
-class UserPrincipalModel(
-        @get:JsonIgnore
-        val user: org.springframework.security.core.userdetails.User
-) : UserPrincipal {
-
-    override fun id() = user.username!!
-
-    override fun getFirstName() = null
-
-    override fun getLastName() = null
-
-    override fun getAuthorities() = user.authorities
-
-    override fun isEnabled() = user.isEnabled
-
-    override fun getUsername() = user.username
-
-    override fun isCredentialsNonExpired() = user.isCredentialsNonExpired
-
-    @JsonIgnore
-    override fun getPassword() = user.password
-
-    override fun isAccountNonExpired() = user.isAccountNonExpired
-
-    override fun isAccountNonLocked() = user.isAccountNonLocked
-
-    override fun getName() = user.username
 
 }
 
@@ -51,8 +22,8 @@ class UserPrincipalEntity(
         val user: User
 ) : UserPrincipal {
 
-    override fun id(): String? {
-        return user.id
+    override fun id(): String {
+        return user.id!!
     }
 
     override fun getFirstName() = user.firstName
@@ -77,5 +48,35 @@ class UserPrincipalEntity(
     override fun isAccountNonExpired() = true
 
     override fun isAccountNonLocked() = true
+
+}
+
+data class PredefinedUserPrincipal(
+        private val id: String,
+        private val userPassword: String,
+        private val userAuthorities: List<SimpleGrantedAuthority>
+) : UserPrincipal {
+
+    override fun id() = id
+
+    override fun getFirstName() = null
+
+    override fun getLastName() = null
+
+    override fun getAuthorities() = userAuthorities
+
+    override fun isEnabled() = true
+
+    override fun getUsername() = id
+
+    override fun isCredentialsNonExpired() = true
+
+    override fun getPassword() = userPassword
+
+    override fun isAccountNonExpired() = true
+
+    override fun isAccountNonLocked() = true
+
+    override fun getName() = id
 
 }
