@@ -1,11 +1,15 @@
 package com.scherule.users.controllers
 
+import com.scherule.users.controllers.resources.UserResource
 import com.scherule.users.controllers.resources.UserResourceAssembler
 import com.scherule.users.domain.models.User
 import com.scherule.users.domain.repositories.UserRepository
 import com.scherule.users.domain.services.UserService
 import com.scherule.users.exceptions.UserNotFoundException
 import io.swagger.annotations.Api
+import io.swagger.annotations.ApiOperation
+import io.swagger.annotations.ApiResponse
+import io.swagger.annotations.ApiResponses
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PagedResourcesAssembler
@@ -17,7 +21,9 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.*
 import javax.websocket.server.PathParam
 import org.springframework.hateoas.mvc.ControllerLinkBuilder.*
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMethod
+import javax.ws.rs.Consumes
 
 /**
  *
@@ -38,7 +44,10 @@ class UserController
     /**
      * This endpoint gets called whenever the user authenticates on a page having no redirect back link.
      */
-    @RequestMapping(path = arrayOf("/me"), method = arrayOf(RequestMethod.GET), produces = arrayOf(MediaType.ALL_VALUE))
+    @ApiOperation(value = "me", notes = "Get my user")
+    @ApiResponses(ApiResponse(code = 200, message = "OK", response = UserResource::class))
+    @GetMapping("/me")
+    @Consumes(MediaType.ALL_VALUE)
     fun getUser() = userResourceAssembler.toResource(userService.getActingUser()).apply {
         add(linkTo(UserController::class.java).slash("/me").withSelfRel())
     }

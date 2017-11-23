@@ -16,10 +16,10 @@ class LocalUserDetailsService
 @Autowired constructor(
         private val userRepository: UserRepository,
         private val systemRunner: SystemRunner,
-        @Qualifier("predefinedUsers") private val predefinedUsers: Map<String, UserPrincipal>
+        private val superUsersService: SuperUsersService
 ) : UserDetailsService {
 
-    override fun loadUserByUsername(email: String) = predefinedUsers.getOrElse(email) {
+    override fun loadUserByUsername(email: String) = superUsersService.getSuperUser(email).orElseGet {
         systemRunner.runInSystemContext {
             userRepository.findByEmail(email).map { user -> UserPrincipalEntity(user) }
         }.orElseThrow { UserNotFoundException() }!!
