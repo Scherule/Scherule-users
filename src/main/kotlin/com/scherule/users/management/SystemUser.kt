@@ -1,4 +1,4 @@
-package com.toptal.ggurgul.timezones.security
+package com.scherule.users.management
 
 data class SystemUser(val id: Long = -1) {
 

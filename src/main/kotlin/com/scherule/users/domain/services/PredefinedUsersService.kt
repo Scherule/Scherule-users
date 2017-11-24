@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class SuperUsersService
+class PredefinedUsersService
 @Autowired constructor(
         @Qualifier("predefinedUsers") private val predefinedUsers: Map<String, UserPrincipal>
 ) {
 
-    fun getSuperUser(email: String) = Optional.ofNullable(predefinedUsers[email])
+    fun getPredefinedUser(username: String) = Optional.ofNullable(predefinedUsers[username])
 
 }

@@ -1,7 +1,6 @@
 package com.scherule.users.management
 
 import com.scherule.users.domain.models.AuthorityName
-import com.toptal.ggurgul.timezones.security.SystemUser
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken
