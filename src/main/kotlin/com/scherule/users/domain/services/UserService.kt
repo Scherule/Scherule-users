@@ -1,16 +1,14 @@
 package com.scherule.users.domain.services
 
-import com.scherule.users.domain.models.*
+import com.scherule.users.domain.models.AuthorityName
+import com.scherule.users.domain.models.User
+import com.scherule.users.domain.models.UserModel
+import com.scherule.users.domain.models.UserModelMapper
 import com.scherule.users.domain.repositories.AuthorityRepository
 import com.scherule.users.domain.repositories.UserRepository
-import com.scherule.users.management.SystemRunner
-import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Pageable
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.security.oauth2.provider.OAuth2Authentication
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
 
@@ -36,7 +34,7 @@ class UserService(
     @Transactional
     fun createUser(userModel: UserModel): UserModel {
         val user = userRepository.save(User(
-                email = userModel.email,
+                email = userModel.email!!,
                 password = passwordEncoder.encode(userModel.password),
                 authorities = mutableListOf(authorityRepository.findOne(AuthorityName.ROLE_USER)),
                 enabled = true,

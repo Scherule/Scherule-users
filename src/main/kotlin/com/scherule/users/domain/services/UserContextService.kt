@@ -5,8 +5,9 @@ import com.scherule.users.domain.repositories.UserRepository
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.provider.OAuth2Authentication
+import org.springframework.stereotype.Service
 
-
+@Service
 class UserContextService(
         private val userRepository: UserRepository
         ) {

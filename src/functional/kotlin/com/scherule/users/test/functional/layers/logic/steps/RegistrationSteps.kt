@@ -4,11 +4,10 @@ import com.scherule.users.domain.commands.AccountActivationCommand
 import com.scherule.users.domain.models.UserCodeType
 import com.scherule.users.domain.repositories.UserCodesRepository
 import com.scherule.users.domain.repositories.UserRepository
-import com.scherule.users.domain.services.UserService
+import com.scherule.users.domain.services.AccountService
 import com.scherule.users.test.functional.aRegistrationCommand
-import com.scherule.users.test.functional.layers.logic.AbstractSteps
-import com.scherule.users.test.functional.layers.logic.StepContext
 import com.scherule.users.test.functional.managers.UsersManager
+import cucumber.api.java8.En
 import org.assertj.core.api.Assertions.assertThat
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito
@@ -20,12 +19,12 @@ import org.springframework.mail.SimpleMailMessage
 internal class RegistrationSteps
 @Autowired constructor(
         private val usersManager: UsersManager,
-        private val userService: UserService,
+        private val accountService: AccountService,
         private val userRepository: UserRepository,
         private val userCodesRepository: UserCodesRepository,
         private val stepContext: StepContext,
-        @MockBean private val mailSender: MailSender
-) : AbstractSteps() {
+        private val mailSender: MailSender
+) : En {
 
     var registrationCommandBuilder = aRegistrationCommand()
 
@@ -62,7 +61,7 @@ internal class RegistrationSteps
         }
 
         When("he confirms his account using invalid confirmation code") {
-            try { userService.activateUser(AccountActivationCommand("invalid")) } catch (e: Exception) {}
+            try { accountService.activateAccount(AccountActivationCommand("invalid")) } catch (e: Exception) {}
             refreshActingUser()
         }
 
@@ -108,7 +107,7 @@ internal class RegistrationSteps
     }
 
     private fun confirmAccount() {
-        try { userService.activateUser(AccountActivationCommand(stepContext.userCode.map { it.code }.get())) } catch(e: Exception) {}
+        try { accountService.activateAccount(AccountActivationCommand(stepContext.userCode.map { it.code }.get())) } catch(e: Exception) {}
     }
 
     private fun issueValidRegistrationRequest() {
@@ -122,7 +121,7 @@ internal class RegistrationSteps
     }
 
     private fun issueRegistrationRequest() {
-        userService.registerUser(registrationCommandBuilder.build())
+        accountService.registerUser(registrationCommandBuilder.build())
     }
 
     private fun fillRegistrationRequest() {

@@ -57,11 +57,11 @@ class User(
 )
 
 data class UserModel(
-        val id: String,
-        val email: String,
+        val id: String? = null,
+        val email: String? = null,
         val password: String? = null,
-        val firstName: String?,
-        val lastName: String?
+        val firstName: String? = null,
+        val lastName: String? = null
 )
 
 @Component

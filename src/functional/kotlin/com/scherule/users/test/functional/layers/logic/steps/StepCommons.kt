@@ -1,4 +1,4 @@
-package com.scherule.users.test.functional.layers.logic
+package com.scherule.users.test.functional.layers.logic.steps
 
 import com.scherule.users.domain.models.User
 import com.scherule.users.domain.models.UserCode
@@ -11,12 +11,15 @@ import org.springframework.boot.autoconfigure.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Scope
+import org.springframework.mail.MailSender
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
+
 
 @Category(FunctionalTest::class)
 @RunWith(SpringRunner::class)
@@ -24,10 +27,13 @@ import java.util.*
 @ActiveProfiles("dev", "test")
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @ContextConfiguration(classes = arrayOf(CucumberContext::class, FunctionalTestContext::class))
-abstract class AbstractSteps : En
+class ContextStep : En
 
 @TestConfiguration
 class CucumberContext {
+
+    @MockBean
+    private lateinit var mailSender: MailSender
 
     @Bean
     @Scope("cucumber-glue")
