@@ -4,14 +4,13 @@ import com.scherule.users.domain.models.UserModel
 import com.scherule.users.domain.repositories.UserRepository
 import com.scherule.users.domain.services.UserService
 import com.scherule.users.test.functional.managers.UserContextSwitcher
-import com.scherule.users.test.functional.managers.UsersManager
 import cucumber.api.java8.En
 import org.assertj.core.api.Assertions.assertThat
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
 
 internal class ManagementSteps
 @Autowired constructor(
+        private val stepContext: StepContext,
         private val userService: UserService,
         private val userRepository: UserRepository,
         private val userContextSwitcher: UserContextSwitcher
@@ -29,7 +28,11 @@ internal class ManagementSteps
         }
 
         When("super user does any other action") {
-            assertThat(userRepository.findByEmail("abc@test.com")).isNotNull()
+            stepContext.expectException {
+                userContextSwitcher.runAsSuperUser {
+                    userService.getActingUser()
+                }
+            }
         }
 
         Then("the admin user is created") {
@@ -37,7 +40,7 @@ internal class ManagementSteps
         }
 
         Then("he is forbidden to do so") {
-            assertThat(userRepository.findByEmail("abc@test.com")).isNotNull()
+            assertThat(stepContext.getExceptions()).isNotEmpty
         }
 
     }

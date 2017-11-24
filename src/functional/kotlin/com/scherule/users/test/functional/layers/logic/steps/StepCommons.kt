@@ -43,7 +43,19 @@ class CucumberContext {
 
 class StepContext {
 
+    private val exceptionsThrown = mutableListOf<Exception>()
+
     var user: Optional<User> = Optional.empty()
     var userCode: Optional<UserCode> = Optional.empty()
+
+    fun expectException(fn: () -> Unit) {
+        try {
+            fn()
+        } catch (e: Exception) {
+            exceptionsThrown.add(e)
+        }
+    }
+
+    fun getExceptions() = exceptionsThrown.toList()
 
 }
