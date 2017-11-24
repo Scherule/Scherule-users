@@ -1,6 +1,5 @@
 package com.scherule.users.domain.services
 
-import com.scherule.users.domain.models.User
 import com.scherule.users.domain.models.UserPrincipal
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier

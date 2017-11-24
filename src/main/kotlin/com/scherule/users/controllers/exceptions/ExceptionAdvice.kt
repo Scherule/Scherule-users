@@ -1,5 +1,6 @@
 package com.scherule.users.controllers.exceptions
 
+import com.scherule.users.domain.services.AccountService
 import com.scherule.users.exceptions.UserNotFoundException
 import com.scherule.users.domain.services.UserCodesService
 import com.scherule.users.domain.services.UserService
@@ -33,7 +34,7 @@ class ExceptionAdvice {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST, reason = "This e-mail address is restricted or is already used. Try to log in.")
-    @ExceptionHandler(UserService.DuplicateUserException::class)
+    @ExceptionHandler(AccountService.DuplicateUserException::class)
     fun duplicateUser() {
 
     }

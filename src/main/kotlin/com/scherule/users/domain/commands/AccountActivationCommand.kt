@@ -1,6 +1,6 @@
 package com.scherule.users.domain.commands
 
 
-data class UserActivationCommand(
+data class AccountActivationCommand(
         val code: String
 )

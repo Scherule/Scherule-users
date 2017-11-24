@@ -1,10 +1,11 @@
 package com.scherule.users.security
 
-import com.scherule.users.handlers.LocalAuthenticationFailureHandler
+import com.scherule.users.domain.models.AuthorityName
 import com.scherule.users.domain.models.IdentityType
 import com.scherule.users.domain.models.PredefinedUserPrincipal
-import com.scherule.users.domain.services.UserIdentityBinder
 import com.scherule.users.domain.models.UserPrincipal
+import com.scherule.users.domain.services.UserIdentityBinder
+import com.scherule.users.handlers.LocalAuthenticationFailureHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties
@@ -18,6 +19,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.Authentication
@@ -47,6 +49,7 @@ import javax.servlet.http.HttpServletResponse
 // todo try this https://stackoverflow.com/questions/28908946/spring-security-oauth2-and-form-login-configuration
 @Configuration
 @EnableOAuth2Client
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
@@ -117,7 +120,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         PredefinedUserPrincipal(
                 id = it.username,
                 userPassword =  passwordEncoder().encode(it.password),
-                userAuthorities = listOf(SimpleGrantedAuthority("ADMIN"))
+                userAuthorities = listOf(SimpleGrantedAuthority(AuthorityName.ROLE_SUPER.name))
         )
     }.associateBy { it.username }
 
@@ -127,7 +130,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     }
 
     @Bean
-    @ConfigurationProperties("admin")
+    @ConfigurationProperties("superUser")
     fun adminUser() = PredefinedUserResource()
 
     // https://github.com/spring-guides/tut-spring-security-and-angular-js/blob/master/oauth2/authserver/src/main/java/demo/AuthserverApplication.java

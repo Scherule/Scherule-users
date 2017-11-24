@@ -1,6 +1,6 @@
 package com.scherule.users.test.functional.layers.logic.steps
 
-import com.scherule.users.domain.commands.UserActivationCommand
+import com.scherule.users.domain.commands.AccountActivationCommand
 import com.scherule.users.domain.models.UserCodeType
 import com.scherule.users.domain.repositories.UserCodesRepository
 import com.scherule.users.domain.repositories.UserRepository
@@ -62,7 +62,7 @@ internal class RegistrationSteps
         }
 
         When("he confirms his account using invalid confirmation code") {
-            try { userService.activateUser(UserActivationCommand("invalid")) } catch (e: Exception) {}
+            try { userService.activateUser(AccountActivationCommand("invalid")) } catch (e: Exception) {}
             refreshActingUser()
         }
 
@@ -108,7 +108,7 @@ internal class RegistrationSteps
     }
 
     private fun confirmAccount() {
-        try { userService.activateUser(UserActivationCommand(stepContext.userCode.map { it.code }.get())) } catch(e: Exception) {}
+        try { userService.activateUser(AccountActivationCommand(stepContext.userCode.map { it.code }.get())) } catch(e: Exception) {}
     }
 
     private fun issueValidRegistrationRequest() {

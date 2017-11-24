@@ -1,12 +1,11 @@
 package com.scherule.users.controllers
 
 import com.scherule.users.domain.commands.RegistrationCommand
-import com.scherule.users.domain.commands.UserActivationCommand
-import com.scherule.users.domain.services.UserService
+import com.scherule.users.domain.commands.AccountActivationCommand
+import com.scherule.users.domain.services.AccountService
 import com.toptal.ggurgul.timezones.exceptions.RegistrationException
 import io.swagger.annotations.Api
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.hateoas.EntityLinks
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.*
 class RegistrationController
 @Autowired
 constructor(
-        private val userService: UserService
+        private val accountService: AccountService
 ) {
 
     @RequestMapping(method = arrayOf(RequestMethod.POST))
@@ -25,14 +24,14 @@ constructor(
     fun registerUser(
             @RequestBody registrationCommand: RegistrationCommand
     ) {
-        userService.registerUser(registrationCommand)
+        accountService.registerUser(registrationCommand)
     }
 
     @RequestMapping(value = "/confirmation", method = arrayOf(RequestMethod.POST))
     @ResponseStatus(HttpStatus.OK)
     @Throws(RegistrationException::class)
     fun confirmUserRegistration(
-            @RequestBody userActivationCommand: UserActivationCommand
-    ) = userService.activateUser(userActivationCommand)
+            @RequestBody accountActivationCommand: AccountActivationCommand
+    ) = accountService.activateAccount(accountActivationCommand)
 
 }

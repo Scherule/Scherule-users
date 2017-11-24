@@ -93,8 +93,8 @@ registration:
     from: noreply@timezones.com
     subject: Your registration link at Expenses Tracker App
 
-admin:
-  username: admin
+superUser:
+  username: master
   password: Secret123!
 
 user:

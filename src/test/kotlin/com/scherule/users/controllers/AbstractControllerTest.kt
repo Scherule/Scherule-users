@@ -1,6 +1,7 @@
 package com.scherule.users.controllers
 
 import com.scherule.users.domain.repositories.UserRepository
+import com.scherule.users.domain.services.AccountService
 import com.scherule.users.domain.services.UserIdentityBinder
 import com.scherule.users.domain.services.UserService
 import com.scherule.users.security.WebSecurityConfig
@@ -34,6 +35,9 @@ abstract class AbstractControllerTest {
 
     @MockBean
     protected lateinit var userService: UserService
+
+    @MockBean
+    protected lateinit var accountService: AccountService
 
     @MockBean
     protected lateinit var mailSender: MailSender

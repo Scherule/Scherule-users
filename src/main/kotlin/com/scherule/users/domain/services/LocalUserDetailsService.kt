@@ -1,13 +1,11 @@
 package com.scherule.users.domain.services
 
-import com.scherule.users.exceptions.UserNotFoundException
-import com.scherule.users.management.SystemRunner
 import com.scherule.users.domain.models.IdentityType
-import com.scherule.users.domain.models.UserPrincipal
 import com.scherule.users.domain.models.UserPrincipalEntity
 import com.scherule.users.domain.repositories.UserRepository
+import com.scherule.users.exceptions.UserNotFoundException
+import com.scherule.users.management.SystemRunner
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 

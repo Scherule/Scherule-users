@@ -1,7 +1,7 @@
 package com.scherule.users.controllers
 
+import com.scherule.users.data.RED_ACCOUNT
 import com.scherule.users.data.RED_USER
-import com.scherule.users.domain.models.User
 import com.scherule.users.utils.ActingAsUser
 import org.junit.Before
 import org.junit.Test
@@ -39,7 +39,7 @@ class AccountControllerTest  : AbstractControllerTest() {
     @ActingAsUser
     @Throws(Exception::class)
     fun getAccount_200() {
-        BDDMockito.given(userService.getActingUser()).willReturn(RED_USER)
+        BDDMockito.given(accountService.getAccount()).willReturn(RED_ACCOUNT)
         mvc.perform(MockMvcRequestBuilders.get("/api/account")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))

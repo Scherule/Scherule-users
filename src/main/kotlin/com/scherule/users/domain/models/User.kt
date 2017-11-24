@@ -2,6 +2,7 @@ package com.scherule.users.domain.models
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.annotations.GenericGenerator
+import org.springframework.stereotype.Component
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
@@ -54,3 +55,23 @@ class User(
         var boundIdentities: MutableList<BoundIdentity> = mutableListOf()
 
 )
+
+data class UserModel(
+        val id: String,
+        val email: String,
+        val password: String? = null,
+        val firstName: String?,
+        val lastName: String?
+)
+
+@Component
+class UserModelMapper {
+
+    fun toUserModel(user: User) = UserModel(
+            id = user.id!!,
+            email = user.email,
+            firstName = user.firstName,
+            lastName = user.lastName
+    )
+
+}

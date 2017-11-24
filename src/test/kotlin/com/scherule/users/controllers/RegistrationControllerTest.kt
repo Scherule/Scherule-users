@@ -1,15 +1,12 @@
 package com.scherule.users.controllers
 
 import com.scherule.users.domain.commands.RegistrationCommand
-import com.scherule.users.domain.commands.UserActivationCommand
 import com.scherule.users.domain.models.User
+import com.scherule.users.domain.services.AccountService
 import com.scherule.users.domain.services.UserCodesService
-import com.scherule.users.domain.services.UserService
 import org.junit.Before
 import org.junit.Test
-import org.mockito.BDDMockito.contains
 import org.mockito.BDDMockito.given
-import org.mockito.Matchers
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -17,7 +14,6 @@ import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
@@ -43,7 +39,7 @@ class RegistrationControllerTest : AbstractControllerTest() {
     @Test
     @Throws(Exception::class)
     fun postRegister_valid_201() {
-        given(userService.registerUser(RegistrationCommand(
+        given(accountService.registerUser(RegistrationCommand(
                 email = "hello.kitty@dummy.com",
                 password = "peterPan123",
                 firstName = "Alice",
@@ -71,7 +67,7 @@ class RegistrationControllerTest : AbstractControllerTest() {
     @Test
     @Throws(Exception::class)
     fun postRegister_duplicateUser_4xx() {
-        given(userService.registerUser(anyObject())).willThrow(UserService.DuplicateUserException())
+        given(accountService.registerUser(anyObject())).willThrow(AccountService.DuplicateUserException())
         mvc.perform(MockMvcRequestBuilders.post("/api/registration")
                 .content("""
                     {
@@ -104,7 +100,7 @@ class RegistrationControllerTest : AbstractControllerTest() {
     @Test
     @Throws(Exception::class)
     fun postRegistrationConfirmation_invalidCode_400() {
-        given(userService.activateUser(anyObject())).willThrow(UserCodesService.MalformedUserCodeException())
+        given(accountService.activateAccount(anyObject())).willThrow(UserCodesService.MalformedUserCodeException())
         mvc.perform(MockMvcRequestBuilders.post("/api/registration/confirmation")
                 .content("""
                     {
