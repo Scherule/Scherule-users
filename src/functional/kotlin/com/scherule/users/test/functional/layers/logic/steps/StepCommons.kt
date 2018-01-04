@@ -47,6 +47,7 @@ class StepContext {
 
     var user: Optional<User> = Optional.empty()
     var userCode: Optional<UserCode> = Optional.empty()
+    var password: Optional<String> = Optional.empty()
 
     fun expectException(fn: () -> Unit) {
         try {

@@ -9,6 +9,7 @@ import com.scherule.users.domain.repositories.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestComponent
 import org.springframework.security.crypto.password.PasswordEncoder
+import javax.transaction.Transactional
 
 @TestComponent
 class UsersManager {
@@ -25,6 +26,7 @@ class UsersManager {
     @Autowired
     private lateinit var passwordEncoder: PasswordEncoder
 
+    @Transactional
     fun createDummyUser() = userRepository.save(User(
             email = "someone@anyone.com",
             password = passwordEncoder.encode("secret"),
