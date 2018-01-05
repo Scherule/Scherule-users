@@ -14,7 +14,7 @@ eureka:
     leaseExpirationDurationInSeconds: 20
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URL:http://localhost:9990/eureka/}
+      defaultZone: ${EUREKA_URL:http://localhost:10000/eureka/}
 
 security:
  oauth2:

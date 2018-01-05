@@ -8,7 +8,6 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.data.repository.query.spi.EvaluationContextExtension
 import org.springframework.data.repository.query.spi.EvaluationContextExtensionSupport
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver
@@ -47,7 +46,7 @@ import javax.servlet.http.HttpServletResponse
 @RestController
 @EnableSpringDataWebSupport
 @EnableSwagger2
-class ScheruleUsers : WebMvcConfigurerAdapter() {
+class UsersApplication : WebMvcConfigurerAdapter() {
 
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
         registry
@@ -172,7 +171,7 @@ class ScheruleUsers : WebMvcConfigurerAdapter() {
 }
 
 fun main(args: Array<String>) {
-    SpringApplication.run(ScheruleUsers::class.java, *args)
+    SpringApplication.run(UsersApplication::class.java, *args)
 }
 
 
